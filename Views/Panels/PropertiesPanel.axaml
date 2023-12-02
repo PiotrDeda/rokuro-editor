@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:controls="clr-namespace:Oirenomi.Views.Controls"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="Oirenomi.Views.Panels.PropertiesPanel">
+	<StackPanel Background="DarkGray">
+		<Border Background="LightPink" Padding="5">
+			<TextBlock FontWeight="Bold" Text="Properties" />
+		</Border>
+
+		<controls:PropertyControl Label="Name" />
+		<controls:PropertyControl Label="Sprite" />
+		<controls:PropertyControl Label="Class" />
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<controls:PropertyControl Grid.Column="0" Label="X" Margin="5,5,0,5" />
+			<controls:PropertyControl Grid.Column="1" Label="Y" />
+		</Grid>
+		<StackPanel Margin="0,10,0,0">
+			<TextBlock Background="Gray" FontWeight="Bold" Padding="5,5,5,5" Text="Custom properties:" />
+			<controls:PropertyControl Label="ExampleProperty" />
+		</StackPanel>
+	</StackPanel>
+</UserControl>

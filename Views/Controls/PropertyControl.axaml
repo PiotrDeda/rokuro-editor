@@ -1,0 +1,25 @@
+<Styles xmlns="https://github.com/avaloniaui"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:controls="using:Oirenomi.Views.Controls">
+	<Design.PreviewWith>
+		<controls:PropertyControl />
+	</Design.PreviewWith>
+
+	<Style Selector="controls|PropertyControl">
+		<Setter Property="Label" Value="Label" />
+		<Setter Property="Margin" Value="5" />
+
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Column="0" Text="{TemplateBinding Label}" VerticalAlignment="Center" Margin="0,0,5,0" />
+					<TextBox Grid.Column="1" Margin="0,0,0,0" />
+				</Grid>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+</Styles>

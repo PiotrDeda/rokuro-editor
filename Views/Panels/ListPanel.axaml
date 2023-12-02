@@ -1,0 +1,72 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="Oirenomi.Views.Panels.ListPanel">
+	<Grid Background="DarkGray">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="2*" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<DockPanel Grid.Row="0">
+			<Border DockPanel.Dock="Top" Background="LightBlue" Padding="5">
+				<TextBlock FontWeight="Bold" Text="Objects" />
+			</Border>
+			<ScrollViewer>
+				<ListBox>
+					<ListBoxItem Content="Object 1" />
+					<ListBoxItem Content="Object 2" />
+					<ListBoxItem Content="Object 3" />
+					<ListBoxItem Content="Object 4" />
+					<ListBoxItem Content="Object 5" />
+					<ListBoxItem Content="Object 6" />
+					<ListBoxItem Content="Object 7" />
+					<ListBoxItem Content="Object 8" />
+					<ListBoxItem Content="Object 9" />
+					<ListBoxItem Content="Object 10" />
+					<ListBoxItem Content="Object 11" />
+					<ListBoxItem Content="Object 12" />
+					<ListBoxItem Content="Object 13" />
+					<ListBoxItem Content="Object 14" />
+					<ListBoxItem Content="Object 15" />
+					<ListBoxItem Content="Object 16" />
+					<ListBoxItem Content="Object 17" />
+					<ListBoxItem Content="Object 18" />
+					<ListBoxItem Content="Object 19" />
+					<ListBoxItem Content="Object 20" />
+				</ListBox>
+			</ScrollViewer>
+		</DockPanel>
+
+		<DockPanel Grid.Row="1">
+			<Border DockPanel.Dock="Top" Background="LightGreen" Padding="5">
+				<TextBlock FontWeight="Bold" Text="Cameras" />
+			</Border>
+			<ScrollViewer>
+				<ListBox>
+					<ListBoxItem Content="Camera" />
+					<ListBoxItem Content="UI Camera" />
+				</ListBox>
+			</ScrollViewer>
+		</DockPanel>
+
+		<DockPanel Grid.Row="2">
+			<Border DockPanel.Dock="Top" Background="LightSalmon" Padding="5">
+				<TextBlock FontWeight="Bold" Text="Scenes" />
+			</Border>
+			<ScrollViewer>
+				<ListBox>
+					<ListBoxItem Content="Main Menu" />
+					<ListBoxItem Content="Game Map" />
+					<ListBoxItem Content="Fight" />
+					<ListBoxItem Content="Win" />
+					<ListBoxItem Content="Lose" />
+					<ListBoxItem Content="Debug" />
+				</ListBox>
+			</ScrollViewer>
+		</DockPanel>
+	</Grid>
+</UserControl>

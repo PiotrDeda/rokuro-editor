@@ -2,5 +2,5 @@
 
 public class MainWindowViewModel : ViewModelBase
 {
-	public string Greeting => "Welcome to Oirenomi!";
+	public MenuPanelViewModel MenuPanelViewModel { get; } = new();
 }

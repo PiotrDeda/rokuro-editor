@@ -1,9 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:vm="using:Oirenomi.ViewModels"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:panels="clr-namespace:Oirenomi.Views.Panels"
+		xmlns:vm="using:Oirenomi.ViewModels"
+		xmlns:p="using:Oirenomi.Views.Panels"
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:Class="Oirenomi.Views.MainWindow"
 		x:DataType="vm:MainWindowViewModel"
@@ -14,23 +14,26 @@
 		<vm:MainWindowViewModel />
 	</Design.DataContext>
 
-	<Grid Background="Gray">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*" />
-			<RowDefinition Height="12*" />
-			<RowDefinition Height="4*" />
-		</Grid.RowDefinitions>
+	<DockPanel>
+		<p:MenuPanel DockPanel.Dock="Top" DataContext="{Binding MenuPanelViewModel}" />
+		<Grid Background="Gray">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="12*" />
+				<RowDefinition Height="4*" />
+			</Grid.RowDefinitions>
 
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="3*" />
-			<ColumnDefinition Width="12*" />
-			<ColumnDefinition Width="3*" />
-		</Grid.ColumnDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="3*" />
+				<ColumnDefinition Width="12*" />
+				<ColumnDefinition Width="3*" />
+			</Grid.ColumnDefinitions>
 
-		<panels:RunButtonsPanel Grid.Row="0" Grid.Column="1" />
-		<panels:ListPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
-		<Panel Grid.Row="1" Grid.Column="1" Background="LightGray" />
-		<panels:PropertiesPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" />
-		<panels:ConsolePanel Grid.Row="2" Grid.Column="1" />
-	</Grid>
+			<p:RunButtonsPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding MenuPanelViewModel}" />
+			<p:ListPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
+			<Panel Grid.Row="1" Grid.Column="1" Background="LightGray" />
+			<p:PropertiesPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" />
+			<p:ConsolePanel Grid.Row="2" Grid.Column="1" />
+		</Grid>
+	</DockPanel>
 </Window>

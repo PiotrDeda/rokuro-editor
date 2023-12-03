@@ -2,14 +2,19 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:Oirenomi.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:MenuPanelViewModel"
 			 x:Class="Oirenomi.Views.Panels.RunButtonsPanel">
 	<Border Background="DarkGray">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-			<Button Background="LightGray" Margin="5">
+			<Button Background="LightGray" Margin="5" Click="RunButton_OnClick">
 				<Image Source="/Assets/run.png" Width="32" Height="24" />
+				<Button.Flyout>
+					<Flyout ShowMode="TransientWithDismissOnPointerMoveAway">No project is open</Flyout>
+				</Button.Flyout>
 			</Button>
-			<Button Background="LightGray" Margin="5">
+			<Button Background="LightGray" Margin="5" Click="StopButton_OnClick">
 				<Image Source="/Assets/stop.png" Width="32" Height="24" />
 			</Button>
 		</StackPanel>

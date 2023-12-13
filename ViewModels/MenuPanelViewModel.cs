@@ -1,24 +1,17 @@
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Linq;
+using Oirenomi.Models;
 using ReactiveUI;
 
 namespace Oirenomi.ViewModels;
 
-public class MenuPanelViewModel : ViewModelBase
+public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 {
 	public Interaction<string, string?> SelectProjectPath { get; } = new();
-	public string? ProjectPath { get; private set; }
-	public string? ProjectName { get; private set; }
+	public ProjectData ProjectData { get; } = projectData;
 
-	public async void OpenProjectCommand()
-	{
-		ProjectPath = await SelectProjectPath.Handle("Open Project");
-		ProjectName = ProjectPath?.Split('\\').Last().Split('.').First();
-	}
+	public async void OpenProjectCommand() =>
+		ProjectData.SetProjectPathAndName(await SelectProjectPath.Handle("Open Project"));
 
-	public void ExitCommand()
-	{
-		Process.GetCurrentProcess().CloseMainWindow();
-	}
+	public void ExitCommand() => Process.GetCurrentProcess().CloseMainWindow();
 }

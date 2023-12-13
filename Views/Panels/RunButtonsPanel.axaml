@@ -4,18 +4,28 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:Oirenomi.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 x:DataType="vm:MenuPanelViewModel"
+			 x:DataType="vm:RunButtonsPanelViewModel"
 			 x:Class="Oirenomi.Views.Panels.RunButtonsPanel">
 	<Border Background="DarkGray">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 			<Button Background="LightGray" Margin="5" Click="RunButton_OnClick">
 				<Image Source="/Assets/run.png" Width="32" Height="24" />
-				<Button.Flyout>
-					<Flyout ShowMode="TransientWithDismissOnPointerMoveAway">No project is open</Flyout>
-				</Button.Flyout>
+				<FlyoutBase.AttachedFlyout>
+					<Flyout ShowMode="TransientWithDismissOnPointerMoveAway">
+						<TextBlock Text="{Binding FlyoutMessage}" />
+					</Flyout>
+				</FlyoutBase.AttachedFlyout>
 			</Button>
 			<Button Background="LightGray" Margin="5" Click="StopButton_OnClick">
 				<Image Source="/Assets/stop.png" Width="32" Height="24" />
+			</Button>
+			<Button Background="LightGray" Margin="5" Click="ReloadButton_OnClick">
+				<Image Source="/Assets/reload.png" Width="32" Height="24" />
+				<FlyoutBase.AttachedFlyout>
+					<Flyout ShowMode="TransientWithDismissOnPointerMoveAway">
+						<TextBlock Text="{Binding FlyoutMessage}" />
+					</Flyout>
+				</FlyoutBase.AttachedFlyout>
 			</Button>
 		</StackPanel>
 	</Border>

@@ -1,6 +1,6 @@
-using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
@@ -8,7 +8,7 @@ using Oirenomi.ViewModels;
 
 namespace Oirenomi.Views.Panels;
 
-public partial class RunButtonsPanel : ReactiveUserControl<MenuPanelViewModel>
+public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewModel>
 {
 	public RunButtonsPanel()
 	{
@@ -25,39 +25,25 @@ public partial class RunButtonsPanel : ReactiveUserControl<MenuPanelViewModel>
 
 	bool IsRunning { get; set; }
 	Process RunProcess { get; }
+	string NoProjectOpenMessage => "No project is open";
+	string CannotReloadMessage => "Cannot reload while running";
 
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 	async void RunButton_OnClick(object? sender, RoutedEventArgs e)
 	{
 		if (IsRunning)
 			return;
-		if (ViewModel!.ProjectPath is null || ViewModel!.ProjectName is null)
-		{
-			FlyoutBase.ShowAttachedFlyout(this);
-			return;
-		}
-		string projectPath = ViewModel.ProjectPath;
-		string projectName = ViewModel.ProjectName;
-
 		IsRunning = true;
 
-		using (var buildProcess = new Process())
+		if (!ViewModel!.ProjectData.BuildProject())
 		{
-			buildProcess.StartInfo.FileName = "cmd.exe";
-			buildProcess.StartInfo.Arguments = $"/C dotnet build \"{projectPath}\" --output build/{projectName}";
-			buildProcess.StartInfo.CreateNoWindow = true;
-			buildProcess.StartInfo.UseShellExecute = false;
-			buildProcess.StartInfo.RedirectStandardOutput = true;
-
-			buildProcess.Start();
-			Console.Write(buildProcess.StandardOutput.ReadToEnd());
-			buildProcess.WaitForExit();
+			IsRunning = false;
+			ViewModel!.FlyoutMessage = NoProjectOpenMessage;
+			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
+			return;
 		}
 
-		RunProcess.StartInfo.FileName = $"build/{projectName}/{projectName}.exe";
-		RunProcess.StartInfo.WorkingDirectory = $"build/{projectName}";
-		RunProcess.Start();
-		await RunProcess.WaitForExitAsync();
+		await ProjectBuilder.Run(RunProcess, ViewModel.ProjectData.ProjectName!).WaitForExitAsync();
 	}
 
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
@@ -65,5 +51,23 @@ public partial class RunButtonsPanel : ReactiveUserControl<MenuPanelViewModel>
 	{
 		if (IsRunning)
 			RunProcess.Kill();
+	}
+
+	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
+	void ReloadButton_OnClick(object? sender, RoutedEventArgs e)
+	{
+		if (IsRunning)
+		{
+			ViewModel!.FlyoutMessage = CannotReloadMessage;
+			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
+			return;
+		}
+
+		if (!ViewModel!.ProjectData.LoadProject())
+		{
+			ViewModel!.FlyoutMessage = NoProjectOpenMessage;
+			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
+			return;
+		}
 	}
 }

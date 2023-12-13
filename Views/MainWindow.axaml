@@ -29,7 +29,7 @@
 				<ColumnDefinition Width="3*" />
 			</Grid.ColumnDefinitions>
 
-			<p:RunButtonsPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding MenuPanelViewModel}" />
+			<p:RunButtonsPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding RunButtonsPanelViewModel}" />
 			<p:ListPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
 			<Panel Grid.Row="1" Grid.Column="1" Background="LightGray" />
 			<p:PropertiesPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" />

@@ -2,8 +2,14 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:Oirenomi.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:ListPanelViewModel"
 			 x:Class="Oirenomi.Views.Panels.ListPanel">
+	<Design.DataContext>
+		<vm:ListPanelViewModel />
+	</Design.DataContext>
+
 	<Grid Background="DarkGray">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="2*" />
@@ -15,58 +21,41 @@
 			<Border DockPanel.Dock="Top" Background="LightBlue" Padding="5">
 				<TextBlock FontWeight="Bold" Text="Objects" />
 			</Border>
-			<ScrollViewer>
-				<ListBox>
-					<ListBoxItem Content="Object 1" />
-					<ListBoxItem Content="Object 2" />
-					<ListBoxItem Content="Object 3" />
-					<ListBoxItem Content="Object 4" />
-					<ListBoxItem Content="Object 5" />
-					<ListBoxItem Content="Object 6" />
-					<ListBoxItem Content="Object 7" />
-					<ListBoxItem Content="Object 8" />
-					<ListBoxItem Content="Object 9" />
-					<ListBoxItem Content="Object 10" />
-					<ListBoxItem Content="Object 11" />
-					<ListBoxItem Content="Object 12" />
-					<ListBoxItem Content="Object 13" />
-					<ListBoxItem Content="Object 14" />
-					<ListBoxItem Content="Object 15" />
-					<ListBoxItem Content="Object 16" />
-					<ListBoxItem Content="Object 17" />
-					<ListBoxItem Content="Object 18" />
-					<ListBoxItem Content="Object 19" />
-					<ListBoxItem Content="Object 20" />
-				</ListBox>
-			</ScrollViewer>
+			<ListBox Name="GameObjectSelector" ItemsSource="{Binding ProjectData.SelectedScene.GameObjects}"
+					 SelectedItem="{Binding ProjectData.SelectedGameObject, Mode=TwoWay}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 		</DockPanel>
 
 		<DockPanel Grid.Row="1">
 			<Border DockPanel.Dock="Top" Background="LightGreen" Padding="5">
 				<TextBlock FontWeight="Bold" Text="Cameras" />
 			</Border>
-			<ScrollViewer>
-				<ListBox>
-					<ListBoxItem Content="Camera" />
-					<ListBoxItem Content="UI Camera" />
-				</ListBox>
-			</ScrollViewer>
+			<ListBox ItemsSource="{Binding ProjectData.SelectedScene.Cameras}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 		</DockPanel>
 
 		<DockPanel Grid.Row="2">
 			<Border DockPanel.Dock="Top" Background="LightSalmon" Padding="5">
 				<TextBlock FontWeight="Bold" Text="Scenes" />
 			</Border>
-			<ScrollViewer>
-				<ListBox>
-					<ListBoxItem Content="Main Menu" />
-					<ListBoxItem Content="Game Map" />
-					<ListBoxItem Content="Fight" />
-					<ListBoxItem Content="Win" />
-					<ListBoxItem Content="Lose" />
-					<ListBoxItem Content="Debug" />
-				</ListBox>
-			</ScrollViewer>
+			<ListBox Name="SceneSelector" ItemsSource="{Binding ProjectData.Scenes}"
+					 SelectedItem="{Binding ProjectData.SelectedScene, Mode=TwoWay}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 		</DockPanel>
 	</Grid>
 </UserControl>

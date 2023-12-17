@@ -6,7 +6,6 @@
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:DataType="vm:MenuPanelViewModel"
 			 x:Class="Oirenomi.Views.Panels.MenuPanel">
-
 	<Design.DataContext>
 		<vm:MenuPanelViewModel />
 	</Design.DataContext>

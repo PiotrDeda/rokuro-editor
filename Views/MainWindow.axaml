@@ -9,7 +9,6 @@
 		x:DataType="vm:MainWindowViewModel"
 		Icon="/Assets/rokuro.ico"
 		Title="Oirenomi">
-
 	<Design.DataContext>
 		<vm:MainWindowViewModel />
 	</Design.DataContext>
@@ -30,9 +29,9 @@
 			</Grid.ColumnDefinitions>
 
 			<p:RunButtonsPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding RunButtonsPanelViewModel}" />
-			<p:ListPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" />
+			<p:ListPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" DataContext="{Binding ListPanelViewModel}" />
 			<Panel Grid.Row="1" Grid.Column="1" Background="LightGray" />
-			<p:PropertiesPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" />
+			<p:PropertiesPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" DataContext="{Binding PropertiesPanelViewModel}" />
 			<p:ConsolePanel Grid.Row="2" Grid.Column="1" />
 		</Grid>
 	</DockPanel>

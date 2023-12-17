@@ -2,8 +2,9 @@ using System.Collections.Generic;
 
 namespace Oirenomi.Models;
 
-public class Scene
+public class Scene(string name)
 {
-	List<GameObject> GameObjects { get; set; } = new();
-	List<Camera> Cameras { get; set; } = new();
+	public string Name { get; set; } = name;
+	public List<GameObject> GameObjects { get; set; } = new();
+	public List<Camera> Cameras { get; set; } = new();
 }

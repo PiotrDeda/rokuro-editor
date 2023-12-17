@@ -9,5 +9,5 @@ public class GameObject(string name, string sprite, string clazz, int x, int y)
 	public string Class { get; set; } = clazz;
 	public int X { get; set; } = x;
 	public int Y { get; set; } = y;
-	public List<(string, CustomProperty)> CustomProperties { get; set; } = new();
+	public List<CustomProperty> CustomProperties { get; set; } = new();
 }

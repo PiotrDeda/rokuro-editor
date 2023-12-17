@@ -3,17 +3,23 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:controls="clr-namespace:Oirenomi.Views.Controls"
+			 xmlns:vm="using:Oirenomi.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:PropertiesPanelViewModel"
 			 x:Class="Oirenomi.Views.Panels.PropertiesPanel">
-	<StackPanel Background="DarkGray">
-		<Border Background="LightPink" Padding="5">
+	<Design.DataContext>
+		<vm:PropertiesPanelViewModel />
+	</Design.DataContext>
+
+	<DockPanel Background="DarkGray">
+		<Border DockPanel.Dock="Top" Background="LightPink" Padding="5">
 			<TextBlock FontWeight="Bold" Text="Properties" />
 		</Border>
 
-		<controls:PropertyControl Label="Name" />
-		<controls:PropertyControl Label="Sprite" />
-		<controls:PropertyControl Label="Class" />
-		<Grid>
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Name" />
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Sprite" />
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Class" />
+		<Grid DockPanel.Dock="Top">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
@@ -21,9 +27,18 @@
 			<controls:PropertyControl Grid.Column="0" Label="X" Margin="5,5,0,5" />
 			<controls:PropertyControl Grid.Column="1" Label="Y" />
 		</Grid>
-		<StackPanel Margin="0,10,0,0">
-			<TextBlock Background="Gray" FontWeight="Bold" Padding="5,5,5,5" Text="Custom properties:" />
-			<controls:PropertyControl Label="ExampleProperty" />
-		</StackPanel>
-	</StackPanel>
+		<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
+			<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"
+					   Text="Custom properties:" />
+			<ScrollViewer DockPanel.Dock="Top">
+				<ItemsControl ItemsSource="{Binding ProjectData.SelectedGameObject.CustomProperties}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<controls:PropertyControl Label="{Binding Name}" Value="{Binding Value, Mode=TwoWay}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</DockPanel>
+	</DockPanel>
 </UserControl>

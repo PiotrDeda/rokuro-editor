@@ -6,6 +6,10 @@
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:DataType="vm:RunButtonsPanelViewModel"
 			 x:Class="Oirenomi.Views.Panels.RunButtonsPanel">
+	<Design.DataContext>
+		<vm:RunButtonsPanelViewModel />
+	</Design.DataContext>
+
 	<Border Background="DarkGray">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 			<Button Background="LightGray" Margin="5" Click="RunButton_OnClick">

@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using ReactiveUI;
 
-namespace Oirenomi.Models;
+namespace RokuroEditor.Models;
 
 public class GameObject(string name, string sprite, string clazz, int x, int y) : ReactiveObject
 {

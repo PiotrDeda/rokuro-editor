@@ -1,7 +1,7 @@
 using Avalonia.ReactiveUI;
-using Oirenomi.ViewModels;
+using RokuroEditor.ViewModels;
 
-namespace Oirenomi.Views.Panels;
+namespace RokuroEditor.Views.Panels;
 
 public partial class ListPanel : ReactiveUserControl<ListPanelViewModel>
 {

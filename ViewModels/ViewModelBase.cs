@@ -1,5 +1,5 @@
 ﻿using ReactiveUI;
 
-namespace Oirenomi.ViewModels;
+namespace RokuroEditor.ViewModels;
 
 public class ViewModelBase : ReactiveObject;

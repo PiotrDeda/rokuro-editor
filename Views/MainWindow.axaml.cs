@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Oirenomi.Views;
+namespace RokuroEditor.Views;
 
 public partial class MainWindow : Window
 {

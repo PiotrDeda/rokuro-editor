@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace Oirenomi.Models;
+namespace RokuroEditor.Models;
 
 public class Scene(string name)
 {

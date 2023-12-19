@@ -1,6 +1,6 @@
-using Oirenomi.Models;
+using RokuroEditor.Models;
 
-namespace Oirenomi.ViewModels;
+namespace RokuroEditor.ViewModels;
 
 public class RunButtonsPanelViewModel(ProjectData projectData) : ViewModelBase
 {

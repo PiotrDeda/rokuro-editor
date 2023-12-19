@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.Primitives;
 
-namespace Oirenomi.Views.Controls;
+namespace RokuroEditor.Views.Controls;
 
 public class PropertyControl : TemplatedControl
 {

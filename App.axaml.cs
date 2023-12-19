@@ -1,10 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Oirenomi.ViewModels;
-using Oirenomi.Views;
+using RokuroEditor.ViewModels;
+using RokuroEditor.Views;
 
-namespace Oirenomi;
+namespace RokuroEditor;
 
 public class App : Application
 {

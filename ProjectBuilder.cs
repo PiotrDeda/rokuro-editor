@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Oirenomi;
+namespace RokuroEditor;
 
 public static class ProjectBuilder
 {

@@ -4,9 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
-using Oirenomi.ViewModels;
+using RokuroEditor.ViewModels;
 
-namespace Oirenomi.Views.Panels;
+namespace RokuroEditor.Views.Panels;
 
 public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewModel>
 {

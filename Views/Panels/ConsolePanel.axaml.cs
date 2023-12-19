@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Oirenomi.Views.Panels;
+namespace RokuroEditor.Views.Panels;
 
 public partial class ConsolePanel : UserControl
 {

@@ -4,7 +4,7 @@ using System.Threading;
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Oirenomi;
+namespace RokuroEditor;
 
 sealed class Program
 {

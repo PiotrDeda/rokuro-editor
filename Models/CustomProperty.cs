@@ -1,4 +1,4 @@
-namespace Oirenomi.Models;
+namespace RokuroEditor.Models;
 
 public class CustomProperty(string name, string value)
 {

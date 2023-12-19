@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Oirenomi.ViewModels;
+using RokuroEditor.ViewModels;
 
-namespace Oirenomi;
+namespace RokuroEditor;
 
 public class ViewLocator : IDataTemplate
 {

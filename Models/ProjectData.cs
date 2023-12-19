@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
 
-namespace Oirenomi.Models;
+namespace RokuroEditor.Models;
 
 public class ProjectData : ReactiveObject
 {

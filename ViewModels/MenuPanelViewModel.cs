@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using System.Reactive.Linq;
-using Oirenomi.Models;
+using RokuroEditor.Models;
 using ReactiveUI;
 
-namespace Oirenomi.ViewModels;
+namespace RokuroEditor.ViewModels;
 
 public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 {

@@ -1,4 +1,4 @@
-namespace Oirenomi.Models;
+namespace RokuroEditor.Models;
 
 public class Camera(string name, string clazz)
 {

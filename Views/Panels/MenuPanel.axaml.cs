@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
-using Oirenomi.ViewModels;
+using RokuroEditor.ViewModels;
 using ReactiveUI;
 
-namespace Oirenomi.Views.Panels;
+namespace RokuroEditor.Views.Panels;
 
 public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 {

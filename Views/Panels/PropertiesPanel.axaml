@@ -16,16 +16,16 @@
 			<TextBlock FontWeight="Bold" Text="Properties" />
 		</Border>
 
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Name" />
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Sprite" />
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Class" />
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Name" Value="{Binding ProjectData.SelectedGameObject.Name, Mode=TwoWay}" />
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Sprite" Value="{Binding ProjectData.SelectedGameObject.Sprite, Mode=TwoWay}" />
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Class" Value="{Binding ProjectData.SelectedGameObject.Class, Mode=TwoWay}" />
 		<Grid DockPanel.Dock="Top">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<controls:PropertyControl Grid.Column="0" Label="X" Margin="5,5,0,5" />
-			<controls:PropertyControl Grid.Column="1" Label="Y" />
+			<controls:PropertyControl Grid.Column="0" Label="X" Value="{Binding ProjectData.SelectedGameObject.X, Mode=TwoWay}" />
+			<controls:PropertyControl Grid.Column="1" Label="Y" Value="{Binding ProjectData.SelectedGameObject.Y, Mode=TwoWay}" />
 		</Grid>
 		<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
 			<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"

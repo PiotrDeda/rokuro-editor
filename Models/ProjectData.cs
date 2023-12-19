@@ -27,7 +27,7 @@ public class ProjectData : ReactiveObject
 	public GameObject? SelectedGameObject
 	{
 		get => _selectedGameObject;
-		set => _selectedGameObject = this.RaiseAndSetIfChanged(ref _selectedGameObject, value);
+		set => this.RaiseAndSetIfChanged(ref _selectedGameObject, value);
 	}
 
 	public void SetProjectPathAndName(string? projectPath)

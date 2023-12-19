@@ -32,8 +32,11 @@ public class ProjectData : ReactiveObject
 
 	public void SetProjectPathAndName(string? projectPath)
 	{
-		ProjectPath = projectPath;
-		ProjectName = ProjectPath?.Split('\\').Last().Split('.').First();
+		if (projectPath != null)
+		{
+			ProjectPath = projectPath;
+			ProjectName = ProjectPath?.Split('\\').Last().Split('.').First();
+		}
 	}
 
 	public bool BuildProject()

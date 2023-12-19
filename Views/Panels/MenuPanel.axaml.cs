@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
-using RokuroEditor.ViewModels;
 using ReactiveUI;
+using RokuroEditor.ViewModels;
 
 namespace RokuroEditor.Views.Panels;
 
@@ -28,7 +27,9 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 			}
 		});
 
-		context.SetOutput(storageFiles.First().Path.LocalPath);
-		Console.WriteLine(storageFiles.First().Path.LocalPath);
+		if (storageFiles.Any())
+			context.SetOutput(storageFiles.First().Path.LocalPath);
+		else
+			context.SetOutput(null);
 	}
 }

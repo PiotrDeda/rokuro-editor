@@ -38,7 +38,7 @@ public class ProjectData : ReactiveObject
 
 	public bool BuildProject()
 	{
-		if (ProjectPath is null || ProjectName is null)
+		if (ProjectPath == null || ProjectName == null)
 			return false;
 		ProjectBuilder.Build(ProjectPath, ProjectName);
 		return true;
@@ -46,7 +46,7 @@ public class ProjectData : ReactiveObject
 
 	public bool LoadProject()
 	{
-		if (ProjectPath is null || ProjectName is null)
+		if (ProjectPath == null || ProjectName == null)
 			return false;
 
 		BuildProject();

@@ -9,7 +9,7 @@ public class ViewLocator : IDataTemplate
 {
 	public Control? Build(object? data)
 	{
-		if (data is null)
+		if (data == null)
 			return null;
 
 		string name = data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);

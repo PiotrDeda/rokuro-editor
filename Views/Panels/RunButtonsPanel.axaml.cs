@@ -67,7 +67,6 @@ public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewMo
 		{
 			ViewModel!.FlyoutMessage = NoProjectOpenMessage;
 			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
-			return;
 		}
 	}
 }

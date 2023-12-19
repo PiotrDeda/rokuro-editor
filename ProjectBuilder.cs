@@ -9,8 +9,7 @@ public static class ProjectBuilder
 	{
 		using (var process = new Process())
 		{
-			process.StartInfo = new()
-			{
+			process.StartInfo = new() {
 				FileName = "cmd.exe",
 				Arguments = $"/C dotnet build \"{projectPath}\" --output build/{projectName}",
 				CreateNoWindow = true,

@@ -8,7 +8,7 @@ public class RunButtonsPanelViewModel(ProjectData projectData) : ViewModelBase
 	{
 		ProjectData.LoadSampleData();
 	}
-	
+
 	public ProjectData ProjectData { get; } = projectData;
 	public string FlyoutMessage { get; set; } = "No project is open";
 }

@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Reactive.Linq;
-using RokuroEditor.Models;
 using ReactiveUI;
+using RokuroEditor.Models;
 
 namespace RokuroEditor.ViewModels;
 

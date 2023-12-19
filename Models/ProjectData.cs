@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
 
@@ -6,8 +6,8 @@ namespace Oirenomi.Models;
 
 public class ProjectData : ReactiveObject
 {
-	Scene? _selectedScene;
 	GameObject? _selectedGameObject;
+	Scene? _selectedScene;
 
 	public ProjectData()
 	{
@@ -16,7 +16,7 @@ public class ProjectData : ReactiveObject
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
-	public List<Scene> Scenes { get; set; } = new();
+	public ObservableCollection<Scene> Scenes { get; set; } = new();
 
 	public Scene? SelectedScene
 	{
@@ -52,6 +52,29 @@ public class ProjectData : ReactiveObject
 		BuildProject();
 
 		return true;
+	}
+
+	public void AddScene()
+	{
+		Scenes.Add(new("New Scene"));
+		SelectedScene = Scenes.Last();
+	}
+
+	public void AddGameObject()
+	{
+		if (SelectedScene == null)
+			return;
+
+		SelectedScene.GameObjects.Add(new("New Object", "", "Rokuro.Objects.GameObject", 0, 0));
+		SelectedGameObject = SelectedScene.GameObjects.Last();
+	}
+
+	public void AddCamera()
+	{
+		if (SelectedScene == null)
+			return;
+
+		SelectedScene.Cameras.Add(new("New Camera", "Rokuro.Graphics.Camera"));
 	}
 
 	public void LoadSampleData()

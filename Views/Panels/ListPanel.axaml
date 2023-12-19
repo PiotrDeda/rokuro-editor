@@ -18,8 +18,16 @@
 		</Grid.RowDefinitions>
 
 		<DockPanel Grid.Row="0">
-			<Border DockPanel.Dock="Top" Background="LightBlue" Padding="5">
-				<TextBlock FontWeight="Bold" Text="Objects" />
+			<Border DockPanel.Dock="Top" Background="LightBlue" Padding="0">
+				<DockPanel LastChildFill="False">
+					<TextBlock FontWeight="Bold" Text="Objects" VerticalAlignment="Center" Margin="5" />
+					<Button DockPanel.Dock="Right" Width="27" Height="27" Padding="0"
+							Command="{Binding ProjectData.AddGameObject}">
+						<Viewbox Stretch="Uniform">
+							<TextBlock Text="+" />
+						</Viewbox>
+					</Button>
+				</DockPanel>
 			</Border>
 			<ListBox Name="GameObjectSelector" ItemsSource="{Binding ProjectData.SelectedScene.GameObjects}"
 					 SelectedItem="{Binding ProjectData.SelectedGameObject, Mode=TwoWay}">
@@ -32,8 +40,16 @@
 		</DockPanel>
 
 		<DockPanel Grid.Row="1">
-			<Border DockPanel.Dock="Top" Background="LightGreen" Padding="5">
-				<TextBlock FontWeight="Bold" Text="Cameras" />
+			<Border DockPanel.Dock="Top" Background="LightGreen" Padding="0">
+				<DockPanel LastChildFill="False">
+					<TextBlock FontWeight="Bold" Text="Cameras" VerticalAlignment="Center" Margin="5" />
+					<Button DockPanel.Dock="Right" Width="27" Height="27" Padding="0"
+							Command="{Binding ProjectData.AddCamera}">
+						<Viewbox Stretch="Uniform">
+							<TextBlock Text="+" />
+						</Viewbox>
+					</Button>
+				</DockPanel>
 			</Border>
 			<ListBox ItemsSource="{Binding ProjectData.SelectedScene.Cameras}">
 				<ListBox.ItemTemplate>
@@ -45,8 +61,16 @@
 		</DockPanel>
 
 		<DockPanel Grid.Row="2">
-			<Border DockPanel.Dock="Top" Background="LightSalmon" Padding="5">
-				<TextBlock FontWeight="Bold" Text="Scenes" />
+			<Border DockPanel.Dock="Top" Background="LightSalmon" Padding="0">
+				<DockPanel LastChildFill="False">
+					<TextBlock FontWeight="Bold" Text="Scenes" VerticalAlignment="Center" Margin="5" />
+					<Button DockPanel.Dock="Right" Width="27" Height="27" Padding="0"
+							Command="{Binding ProjectData.AddScene}">
+						<Viewbox Stretch="Uniform">
+							<TextBlock Text="+" />
+						</Viewbox>
+					</Button>
+				</DockPanel>
 			</Border>
 			<ListBox Name="SceneSelector" ItemsSource="{Binding ProjectData.Scenes}"
 					 SelectedItem="{Binding ProjectData.SelectedScene, Mode=TwoWay}">

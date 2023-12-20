@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:controls="clr-namespace:RokuroEditor.Views.Controls"
+			 xmlns:vm="using:RokuroEditor.ViewModels"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:PropertiesPanelViewModel"
+			 x:Class="RokuroEditor.Views.Panels.CameraPropertiesPanel">
+	<Design.DataContext>
+		<vm:PropertiesPanelViewModel />
+	</Design.DataContext>
+
+	<DockPanel Background="DarkGray" LastChildFill="False">
+		<Border DockPanel.Dock="Top" Background="LightPink" Padding="5">
+			<TextBlock FontWeight="Bold" Text="Properties" />
+		</Border>
+
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Name"
+								  Value="{Binding ProjectData.SelectedCamera.Name, Mode=TwoWay}" />
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Class"
+								  Value="{Binding ProjectData.SelectedCamera.Class, Mode=TwoWay}" />
+	</DockPanel>
+</UserControl>

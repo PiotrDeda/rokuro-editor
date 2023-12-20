@@ -10,6 +10,7 @@ namespace RokuroEditor.Models;
 
 public class ProjectData : ReactiveObject
 {
+	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
 
@@ -27,6 +28,12 @@ public class ProjectData : ReactiveObject
 	{
 		get => _selectedGameObject;
 		set => this.RaiseAndSetIfChanged(ref _selectedGameObject, value);
+	}
+
+	public Camera? SelectedCamera
+	{
+		get => _selectedCamera;
+		set => this.RaiseAndSetIfChanged(ref _selectedCamera, value);
 	}
 
 	public void SetProjectPathAndName(string? projectPath)
@@ -97,6 +104,7 @@ public class ProjectData : ReactiveObject
 			return;
 
 		SelectedScene.Cameras.Add(new("New Camera", "Rokuro.Graphics.Camera"));
+		SelectedCamera = SelectedScene.Cameras.Last();
 	}
 
 	public void LoadSampleData()

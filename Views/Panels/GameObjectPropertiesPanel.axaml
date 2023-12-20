@@ -6,7 +6,7 @@
 			 xmlns:vm="using:RokuroEditor.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:DataType="vm:PropertiesPanelViewModel"
-			 x:Class="RokuroEditor.Views.Panels.PropertiesPanel">
+			 x:Class="RokuroEditor.Views.Panels.GameObjectPropertiesPanel">
 	<Design.DataContext>
 		<vm:PropertiesPanelViewModel />
 	</Design.DataContext>

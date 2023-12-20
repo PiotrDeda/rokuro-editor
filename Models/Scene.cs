@@ -1,12 +1,20 @@
 using System.Collections.ObjectModel;
 using System.Linq;
+using ReactiveUI;
 using Rokuro.Dtos;
 
 namespace RokuroEditor.Models;
 
-public class Scene(string name)
+public class Scene(string name) : ReactiveObject
 {
-	public string Name { get; set; } = name;
+	string _name = name;
+
+	public string Name
+	{
+		get => _name;
+		set => this.RaiseAndSetIfChanged(ref _name, value);
+	}
+
 	public ObservableCollection<GameObject> GameObjects { get; set; } = new();
 	public ObservableCollection<Camera> Cameras { get; set; } = new();
 

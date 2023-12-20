@@ -9,6 +9,7 @@ public class PropertiesPanelViewModel(ProjectData projectData) : ViewModelBase
 		ProjectData.LoadSampleData();
 		ProjectData.SelectedScene = ProjectData.Scenes[1];
 		ProjectData.SelectedGameObject = ProjectData.SelectedScene.GameObjects[0];
+		ProjectData.SelectedCamera = ProjectData.SelectedScene.Cameras[0];
 	}
 
 	public ProjectData ProjectData { get; } = projectData;

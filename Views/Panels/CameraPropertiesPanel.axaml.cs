@@ -3,9 +3,9 @@ using RokuroEditor.ViewModels;
 
 namespace RokuroEditor.Views.Panels;
 
-public partial class PropertiesPanel : ReactiveUserControl<PropertiesPanelViewModel>
+public partial class CameraPropertiesPanel : ReactiveUserControl<PropertiesPanelViewModel>
 {
-	public PropertiesPanel()
+	public CameraPropertiesPanel()
 	{
 		InitializeComponent();
 	}

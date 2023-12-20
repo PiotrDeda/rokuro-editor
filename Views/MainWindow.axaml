@@ -31,7 +31,17 @@
 			<p:RunButtonsPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding RunButtonsPanelViewModel}" />
 			<p:ListPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" DataContext="{Binding ListPanelViewModel}" />
 			<Panel Grid.Row="1" Grid.Column="1" Background="LightGray" />
-			<p:PropertiesPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" DataContext="{Binding PropertiesPanelViewModel}" />
+			<TabControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Padding="0">
+				<TabItem Header="Object" Padding="5" FontSize="16">
+					<p:GameObjectPropertiesPanel DataContext="{Binding PropertiesPanelViewModel}" />
+				</TabItem>
+				<TabItem Header="Camera" Padding="5" FontSize="16">
+					<p:CameraPropertiesPanel DataContext="{Binding PropertiesPanelViewModel}" />
+				</TabItem>
+				<TabItem Header="Scene" Padding="5" FontSize="16">
+					<p:ScenePropertiesPanel DataContext="{Binding PropertiesPanelViewModel}" />
+				</TabItem>
+			</TabControl>
 			<p:ConsolePanel Grid.Row="2" Grid.Column="1" />
 		</Grid>
 	</DockPanel>

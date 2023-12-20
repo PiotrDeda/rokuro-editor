@@ -35,6 +35,7 @@ public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewMo
 			return;
 		IsRunning = true;
 
+		ViewModel!.ProjectData.SaveProject();
 		if (!ViewModel!.ProjectData.BuildProject())
 		{
 			IsRunning = false;

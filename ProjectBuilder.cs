@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace RokuroEditor;
 
@@ -11,7 +14,7 @@ public static class ProjectBuilder
 		{
 			process.StartInfo = new() {
 				FileName = "cmd.exe",
-				Arguments = $"/C dotnet build \"{projectPath}\" --output build/{projectName}",
+				Arguments = $"/C dotnet build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}",
 				CreateNoWindow = true,
 				UseShellExecute = false,
 				RedirectStandardOutput = true
@@ -29,4 +32,7 @@ public static class ProjectBuilder
 		process.Start();
 		return process;
 	}
+
+	public static List<string> GetScenePaths(string projectName) => Directory
+		.GetFiles($"build/{projectName}/assets/autogen/data/scenes", "*.json", SearchOption.AllDirectories).ToList();
 }

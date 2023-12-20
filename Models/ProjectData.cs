@@ -1,6 +1,10 @@
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using ReactiveUI;
+using Rokuro.Dtos;
 
 namespace RokuroEditor.Models;
 
@@ -8,11 +12,6 @@ public class ProjectData : ReactiveObject
 {
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
-
-	public ProjectData()
-	{
-		LoadSampleData(); // TODO: Debug only, remove when implemented
-	}
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
@@ -34,8 +33,9 @@ public class ProjectData : ReactiveObject
 	{
 		if (projectPath != null)
 		{
-			ProjectPath = projectPath;
-			ProjectName = ProjectPath?.Split('\\').Last().Split('.').First();
+			ProjectPath = projectPath.Split('\\').Take(projectPath.Split('\\').Length - 1)
+				.Aggregate((a, b) => $"{a}\\{b}");
+			ProjectName = projectPath.Split('\\').Last().Split('.').First();
 		}
 	}
 
@@ -53,6 +53,25 @@ public class ProjectData : ReactiveObject
 			return false;
 
 		BuildProject();
+		Scenes = new();
+		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
+			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!)));
+
+		this.RaisePropertyChanged(nameof(Scenes));
+		return true;
+	}
+
+	public bool SaveProject()
+	{
+		if (ProjectPath == null || ProjectName == null)
+			return false;
+
+		Directory.CreateDirectory($"{ProjectPath}/assets/autogen/data/scenes");
+		Array.ForEach(Directory.GetFiles($"{ProjectPath}/assets/autogen/data/scenes"), File.Delete);
+
+		Scenes.ToList().ForEach(scene =>
+			File.WriteAllText($"{ProjectPath}/assets/autogen/data/scenes/{scene.Name}.json",
+				JsonConvert.SerializeObject(scene.ToDto())));
 
 		return true;
 	}

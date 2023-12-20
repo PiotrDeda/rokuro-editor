@@ -15,8 +15,13 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 	public Interaction<string, string?> SelectProjectPath { get; } = new();
 	public ProjectData ProjectData { get; } = projectData;
 
-	public async void OpenProjectCommand() =>
+	public async void OpenProjectCommand()
+	{
 		ProjectData.SetProjectPathAndName(await SelectProjectPath.Handle("Open Project"));
+		ProjectData.LoadProject();
+	}
+	
+	public void SaveProjectCommand() => ProjectData.SaveProject();
 
 	public void ExitCommand() => Process.GetCurrentProcess().CloseMainWindow();
 }

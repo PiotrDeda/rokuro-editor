@@ -51,7 +51,8 @@
 					</Button>
 				</DockPanel>
 			</Border>
-			<ListBox ItemsSource="{Binding ProjectData.SelectedScene.Cameras}">
+			<ListBox Name="CameraSelector" ItemsSource="{Binding ProjectData.SelectedScene.Cameras}"
+					 SelectedItem="{Binding ProjectData.SelectedCamera, Mode=TwoWay}">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<TextBlock Text="{Binding Name}" />

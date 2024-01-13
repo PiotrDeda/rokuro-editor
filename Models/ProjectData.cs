@@ -94,7 +94,7 @@ public class ProjectData : ReactiveObject
 		if (SelectedScene == null)
 			return;
 
-		SelectedScene.GameObjects.Add(new("New Object", "", "Rokuro.Objects.GameObject", 0, 0));
+		SelectedScene.GameObjects.Add(new("New Object", "", "Rokuro.Objects.GameObject", "Camera", 0, 0));
 		SelectedGameObject = SelectedScene.GameObjects.Last();
 	}
 
@@ -118,21 +118,21 @@ public class ProjectData : ReactiveObject
 		// = Cameras =
 		// == Scene 0 ==
 		Scenes[0].Cameras.Add(new("Camera", "Rokuro.Graphics.Camera"));
-		Scenes[0].Cameras.Add(new("UICamera", "Rokuro.Graphics.UICamera"));
+		Scenes[0].Cameras.Add(new("UI Camera", "Rokuro.Graphics.UICamera"));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
 			Scenes[1].Cameras.Add(new($"Camera{i}", "Rokuro.Graphics.Camera"));
 
 		// = GameObjects =
 		// == Scene 0 ==
-		Scenes[0].GameObjects.Add(new("Player", "tiles/player", "Rokuro.Player", 0, 0));
+		Scenes[0].GameObjects.Add(new("Player", "tiles/player", "Rokuro.Player", "Camera", 0, 0));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Health", "10"));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Damage", "1"));
-		Scenes[0].GameObjects.Add(new("Enemy", "tiles/enemy", "Rokuro.Enemies.Enemy", 0, 0));
-		Scenes[0].GameObjects.Add(new("Item", "tiles/item", "Rokuro.Items.Item", 0, 0));
+		Scenes[0].GameObjects.Add(new("Enemy", "tiles/enemy", "Rokuro.Enemies.Enemy", "Camera", 0, 0));
+		Scenes[0].GameObjects.Add(new("Item", "tiles/item", "Rokuro.Items.Item", "UI Camera", 0, 0));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
-			Scenes[1].GameObjects.Add(new($"GameObject{i}", "GameObject", "Rokuro.GameObject", 0, 0));
+			Scenes[1].GameObjects.Add(new($"GameObject{i}", "GameObject", "Rokuro.GameObject", $"Camera{i}", 0, 0));
 		foreach (int i in Enumerable.Range(0, 100))
 			Scenes[1].GameObjects[0].CustomProperties.Add(new($"Property{i}", $"Value{i}"));
 	}

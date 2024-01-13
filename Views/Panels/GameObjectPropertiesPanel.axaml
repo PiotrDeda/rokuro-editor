@@ -22,6 +22,8 @@
 								  Value="{Binding ProjectData.SelectedGameObject.Sprite, Mode=TwoWay}" />
 		<controls:PropertyControl DockPanel.Dock="Top" Label="Class"
 								  Value="{Binding ProjectData.SelectedGameObject.Class, Mode=TwoWay}" />
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Camera"
+								  Value="{Binding ProjectData.SelectedGameObject.Camera, Mode=TwoWay}" />
 		<Grid DockPanel.Dock="Top">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />

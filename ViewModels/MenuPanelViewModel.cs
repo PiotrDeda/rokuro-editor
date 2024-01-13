@@ -20,7 +20,7 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 		ProjectData.SetProjectPathAndName(await SelectProjectPath.Handle("Open Project"));
 		ProjectData.LoadProject();
 	}
-	
+
 	public void SaveProjectCommand() => ProjectData.SaveProject();
 
 	public void ExitCommand() => Process.GetCurrentProcess().CloseMainWindow();

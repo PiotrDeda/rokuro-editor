@@ -8,13 +8,14 @@ namespace RokuroEditor;
 
 public static class ProjectBuilder
 {
-	public static void Build(string projectPath, string projectName)
+	public static void Build(string projectPath, string projectName, string dotNetPath)
 	{
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
 				FileName = "cmd.exe",
-				Arguments = $"/C dotnet build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}",
+				Arguments =
+					$"/C {dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}",
 				CreateNoWindow = true,
 				UseShellExecute = false,
 				RedirectStandardOutput = true

@@ -16,6 +16,7 @@ public class ProjectData : ReactiveObject
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
+	public string DotNetPath { get; set; } = "dotnet";
 	public ObservableCollection<Scene> Scenes { get; set; } = new();
 
 	public Scene? SelectedScene
@@ -50,7 +51,7 @@ public class ProjectData : ReactiveObject
 	{
 		if (ProjectPath == null || ProjectName == null)
 			return false;
-		ProjectBuilder.Build(ProjectPath, ProjectName);
+		ProjectBuilder.Build(ProjectPath, ProjectName, DotNetPath);
 		return true;
 	}
 
@@ -111,6 +112,9 @@ public class ProjectData : ReactiveObject
 	{
 		if (Scenes.Count > 0)
 			return;
+
+		ProjectPath = @"C:\Users\Example\Documents\Sample Project";
+		ProjectName = "Sample Project";
 
 		// = Scenes =
 		Scenes = new() { new("Game Example"), new("Many Objects"), new("Empty") };

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Reactive;
 using System.Reactive.Linq;
 using ReactiveUI;
 using RokuroEditor.Models;
@@ -13,6 +14,7 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 	}
 
 	public Interaction<string, string?> SelectProjectPath { get; } = new();
+	public Interaction<SettingsWindowViewModel, Unit> OpenSettingsMenu { get; } = new();
 	public ProjectData ProjectData { get; } = projectData;
 
 	public async void OpenProjectCommand()
@@ -22,6 +24,8 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 	}
 
 	public void SaveProjectCommand() => ProjectData.SaveProject();
+
+	public async void SettingsCommand() => await OpenSettingsMenu.Handle(new(ProjectData));
 
 	public void ExitCommand() => Process.GetCurrentProcess().CloseMainWindow();
 }

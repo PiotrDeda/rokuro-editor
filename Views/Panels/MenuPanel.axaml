@@ -15,6 +15,8 @@
 			<MenuItem Header="_Open project..." Command="{Binding OpenProjectCommand}" />
 			<MenuItem Header="_Save project" Command="{Binding SaveProjectCommand}" />
 			<Separator />
+			<MenuItem Header="Se_ttings" Command="{Binding SettingsCommand}" />
+			<Separator />
 			<MenuItem Header="_Exit" Command="{Binding ExitCommand}" />
 		</MenuItem>
 	</Menu>

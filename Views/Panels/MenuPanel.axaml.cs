@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
@@ -16,6 +19,7 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 		InitializeComponent();
 
 		this.WhenActivated(d => { d(ViewModel!.SelectProjectPath.RegisterHandler(SelectProjectPathHandler)); });
+		this.WhenActivated(d => { d(ViewModel!.OpenSettingsMenu.RegisterHandler(OpenSettingsMenuHandler)); });
 	}
 
 	async Task SelectProjectPathHandler(InteractionContext<string, string?> context)
@@ -31,5 +35,14 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 			context.SetOutput(storageFiles.First().Path.LocalPath);
 		else
 			context.SetOutput(null);
+	}
+
+	async Task OpenSettingsMenuHandler(InteractionContext<SettingsWindowViewModel, Unit> context)
+	{
+		var settingsWindow = new SettingsWindow();
+		settingsWindow.DataContext = context.Input;
+		await settingsWindow.ShowDialog(
+			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows.First());
+		context.SetOutput(Unit.Default);
 	}
 }

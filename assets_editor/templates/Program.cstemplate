@@ -1,0 +1,18 @@
+using Rokuro.Core;
+
+namespace %{ProjectName}%;
+
+public class %{ProjectName}% : App
+{
+	public %{ProjectName}%(AppProperties properties) : base(properties) {}
+
+	static void Main()
+	{
+		new %{ProjectName}%(new("%{ProjectName}%", new(0, 0, 0), 1280, 720)).Run();
+	}
+
+	public override void Init()
+	{
+		
+	}
+}

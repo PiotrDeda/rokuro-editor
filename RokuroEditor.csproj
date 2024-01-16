@@ -26,4 +26,11 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
 		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0"/>
 	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="assets_editor\**\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
 </Project>

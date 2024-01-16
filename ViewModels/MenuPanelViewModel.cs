@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using ReactiveUI;
@@ -13,9 +15,29 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 		ProjectData.LoadSampleData();
 	}
 
+	public Interaction<Unit, string?> OpenNewProjectMenu { get; } = new();
 	public Interaction<string, string?> SelectProjectPath { get; } = new();
 	public Interaction<SettingsWindowViewModel, Unit> OpenSettingsMenu { get; } = new();
 	public ProjectData ProjectData { get; } = projectData;
+
+	public async void NewProjectCommand()
+	{
+		string? projectPath = await OpenNewProjectMenu.Handle(Unit.Default);
+		if (projectPath is not null)
+			try
+			{
+				ProjectData.SetProjectPathAndName(projectPath);
+				if (!Directory.Exists(ProjectData.ProjectPath))
+					Directory.CreateDirectory(ProjectData.ProjectPath!);
+				ProjectData.NewProject();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Could not create project:");
+				Console.WriteLine(e);
+			}
+		ProjectData.LoadProject();
+	}
 
 	public async void OpenProjectCommand()
 	{

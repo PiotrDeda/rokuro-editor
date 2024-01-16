@@ -55,6 +55,19 @@ public class ProjectData : ReactiveObject
 		return true;
 	}
 
+	public bool NewProject()
+	{
+		if (ProjectPath == null || ProjectName == null)
+			return false;
+
+		if (Directory.EnumerateFileSystemEntries(ProjectPath).Any())
+			throw new($"Selected directory (\"{ProjectPath}\") is not empty");
+
+		ProjectBuilder.CreateProject(ProjectPath, ProjectName, DotNetPath);
+
+		return true;
+	}
+
 	public bool LoadProject()
 	{
 		if (ProjectPath == null || ProjectName == null)

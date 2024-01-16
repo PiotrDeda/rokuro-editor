@@ -1,0 +1,35 @@
+<Window xmlns="https://github.com/avaloniaui"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:RokuroEditor.ViewModels"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:DataType="vm:NewProjectWindowViewModel"
+		x:Class="RokuroEditor.Views.NewProjectWindow"
+		Width="800" Height="450"
+		Title="Settings" WindowStartupLocation="CenterOwner">
+	<Design.DataContext>
+		<vm:NewProjectWindowViewModel />
+	</Design.DataContext>
+
+	<Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto">
+		<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Padding="10" Text="Project path" />
+		<Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*, Auto">
+			<TextBox Margin="4" Text="{Binding ProjectPath, Mode=TwoWay}" />
+			<Button Grid.Column="1" Margin="4" Content="..." Command="{Binding SelectProjectPathCommand}" />
+		</Grid>
+
+		<TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Padding="10" Text="Project name" />
+		<TextBox Grid.Row="1" Grid.Column="1" Margin="4" Text="{Binding ProjectName}" />
+
+		<TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Padding="10" Text="Resulting path:" />
+		<TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Padding="10"
+				   Text="{Binding ResultingPath}" />
+
+		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+					HorizontalAlignment="Right">
+			<Button Margin="4" Content="Create" Background="LightSkyBlue" Command="{Binding CreateCommand}" />
+			<Button Margin="4" Content="Cancel" Command="{Binding CancelCommand}" />
+		</StackPanel>
+	</Grid>
+</Window>

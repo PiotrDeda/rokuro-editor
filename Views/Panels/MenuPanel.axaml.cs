@@ -18,8 +18,18 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 	{
 		InitializeComponent();
 
+		this.WhenActivated(d => { d(ViewModel!.OpenNewProjectMenu.RegisterHandler(OpenNewProjectMenuHandler)); });
 		this.WhenActivated(d => { d(ViewModel!.SelectProjectPath.RegisterHandler(SelectProjectPathHandler)); });
 		this.WhenActivated(d => { d(ViewModel!.OpenSettingsMenu.RegisterHandler(OpenSettingsMenuHandler)); });
+	}
+
+	async Task OpenNewProjectMenuHandler(InteractionContext<Unit, string?> context)
+	{
+		var newProjectWindow = new NewProjectWindow();
+		newProjectWindow.DataContext = new NewProjectWindowViewModel();
+		context.SetOutput(await newProjectWindow.ShowDialog<string?>(
+			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows.First()
+		));
 	}
 
 	async Task SelectProjectPathHandler(InteractionContext<string, string?> context)
@@ -42,7 +52,8 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 		var settingsWindow = new SettingsWindow();
 		settingsWindow.DataContext = context.Input;
 		await settingsWindow.ShowDialog(
-			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows.First());
+			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows.First()
+		);
 		context.SetOutput(Unit.Default);
 	}
 }

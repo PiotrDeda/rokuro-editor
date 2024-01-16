@@ -12,6 +12,7 @@
 
 	<Menu>
 		<MenuItem Header="_File">
+			<MenuItem Header="_New project" Command="{Binding NewProjectCommand}" />
 			<MenuItem Header="_Open project..." Command="{Binding OpenProjectCommand}" />
 			<MenuItem Header="_Save project" Command="{Binding SaveProjectCommand}" />
 			<Separator />

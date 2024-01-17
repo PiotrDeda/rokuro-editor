@@ -11,11 +11,7 @@
 
 		<Setter Property="Template">
 			<ControlTemplate>
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
+				<Grid ColumnDefinitions="Auto, *">
 					<TextBlock Grid.Column="0" Text="{TemplateBinding Label}" VerticalAlignment="Center" Margin="0,0,5,0" />
 					<TextBox Grid.Column="1" Text="{TemplateBinding Value, Mode=TwoWay}" Margin="0,0,0,0" />
 				</Grid>

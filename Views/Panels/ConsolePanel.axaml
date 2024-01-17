@@ -4,12 +4,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:Class="RokuroEditor.Views.Panels.ConsolePanel">
-	<Grid Background="DarkGray">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-
+	<Grid Background="DarkGray" RowDefinitions="Auto, *" ColumnDefinitions="*">
 		<Border Grid.Row="0" Background="LightYellow" Padding="5">
 			<TextBlock FontWeight="Bold" Text="Console" />
 		</Border>

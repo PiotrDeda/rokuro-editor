@@ -24,11 +24,7 @@
 								  Value="{Binding ProjectData.SelectedGameObject.Class, Mode=TwoWay}" />
 		<controls:PropertyControl DockPanel.Dock="Top" Label="Camera"
 								  Value="{Binding ProjectData.SelectedGameObject.Camera, Mode=TwoWay}" />
-		<Grid DockPanel.Dock="Top">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
+		<Grid DockPanel.Dock="Top" ColumnDefinitions="*, *">
 			<controls:PropertyControl Grid.Column="0" Label="X" Value="{Binding ProjectData.SelectedGameObject.X, Mode=TwoWay}" />
 			<controls:PropertyControl Grid.Column="1" Label="Y" Value="{Binding ProjectData.SelectedGameObject.Y, Mode=TwoWay}" />
 		</Grid>

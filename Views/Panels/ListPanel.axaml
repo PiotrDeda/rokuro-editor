@@ -10,13 +10,7 @@
 		<vm:ListPanelViewModel />
 	</Design.DataContext>
 
-	<Grid Background="DarkGray">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="2*" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-
+	<Grid Background="DarkGray" RowDefinitions="2*, *, *">
 		<DockPanel Grid.Row="0">
 			<Border DockPanel.Dock="Top" Background="LightBlue" Padding="0">
 				<DockPanel LastChildFill="False">

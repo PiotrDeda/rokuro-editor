@@ -20,5 +20,7 @@
 								  Value="{Binding ProjectData.SelectedCamera.Name, Mode=TwoWay}" />
 		<controls:PropertyControl DockPanel.Dock="Top" Label="Class"
 								  Value="{Binding ProjectData.SelectedCamera.Class, Mode=TwoWay}" />
+
+		<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete camera" Command="{Binding DeleteCameraCommand}" />
 	</DockPanel>
 </UserControl>

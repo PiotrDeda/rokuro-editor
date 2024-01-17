@@ -18,5 +18,7 @@
 
 		<controls:PropertyControl DockPanel.Dock="Top" Label="Name"
 								  Value="{Binding ProjectData.SelectedScene.Name, Mode=TwoWay}" />
+
+		<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete scene" Command="{Binding DeleteSceneCommand}" />
 	</DockPanel>
 </UserControl>

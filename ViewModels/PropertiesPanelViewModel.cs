@@ -13,4 +13,10 @@ public class PropertiesPanelViewModel(ProjectData projectData) : ViewModelBase
 	}
 
 	public ProjectData ProjectData { get; } = projectData;
+
+	public void DeleteSceneCommand() => ProjectData.DeleteSelectedScene();
+
+	public void DeleteGameObjectCommand() => ProjectData.DeleteSelectedGameObject();
+
+	public void DeleteCameraCommand() => ProjectData.DeleteSelectedCamera();
 }

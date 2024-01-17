@@ -28,6 +28,10 @@
 			<controls:PropertyControl Grid.Column="0" Label="X" Value="{Binding ProjectData.SelectedGameObject.X, Mode=TwoWay}" />
 			<controls:PropertyControl Grid.Column="1" Label="Y" Value="{Binding ProjectData.SelectedGameObject.Y, Mode=TwoWay}" />
 		</Grid>
+
+		<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete object"
+				Command="{Binding DeleteGameObjectCommand}" />
+
 		<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
 			<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"
 					   Text="Custom properties:" />

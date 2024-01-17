@@ -128,6 +128,33 @@ public class ProjectData : ReactiveObject
 		SelectedCamera = SelectedScene.Cameras.Last();
 	}
 
+	public void DeleteSelectedScene()
+	{
+		if (SelectedScene == null)
+			return;
+
+		Scenes.Remove(SelectedScene);
+		SelectedScene = null;
+	}
+
+	public void DeleteSelectedGameObject()
+	{
+		if (SelectedScene == null || SelectedGameObject == null)
+			return;
+
+		SelectedScene.GameObjects.Remove(SelectedGameObject);
+		SelectedGameObject = null;
+	}
+
+	public void DeleteSelectedCamera()
+	{
+		if (SelectedScene == null || SelectedCamera == null)
+			return;
+
+		SelectedScene.Cameras.Remove(SelectedCamera);
+		SelectedCamera = null;
+	}
+
 	public void LoadSampleData()
 	{
 		if (Scenes.Count > 0)

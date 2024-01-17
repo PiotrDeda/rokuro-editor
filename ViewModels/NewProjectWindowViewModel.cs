@@ -9,6 +9,7 @@ public class NewProjectWindowViewModel : ViewModelBase
 {
 	string _projectName = "";
 	string _projectPath = "";
+	string _resultingPath = "";
 
 	public NewProjectWindowViewModel()
 	{
@@ -36,16 +37,17 @@ public class NewProjectWindowViewModel : ViewModelBase
 		}
 	}
 
-	public string ResultingPath { get; private set; } = "";
+	public string ResultingPath
+	{
+		get => _resultingPath;
+		private set => this.RaiseAndSetIfChanged(ref _resultingPath, value);
+	}
+
 	public Interaction<string, string?> SelectProjectPath { get; } = new();
 	public ReactiveCommand<Unit, string?> CreateCommand { get; }
 	public ReactiveCommand<Unit, string?> CancelCommand { get; }
 
-	void UpdateResultingPath()
-	{
-		ResultingPath = Path.Combine(ProjectPath, ProjectName, $"{ProjectName}.csproj");
-		this.RaisePropertyChanged(nameof(ResultingPath));
-	}
+	void UpdateResultingPath() => ResultingPath = Path.Combine(ProjectPath, ProjectName, $"{ProjectName}.csproj");
 
 	public async void SelectProjectPathCommand()
 	{

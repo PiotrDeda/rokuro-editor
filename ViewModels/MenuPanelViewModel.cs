@@ -46,6 +46,8 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 
 	public void SaveProjectCommand() => ProjectData.SaveProject();
 
+	public void CloseProjectCommand() => ProjectData.CloseProject();
+
 	public async void SettingsCommand() => await OpenSettingsMenu.Handle(new(ProjectData));
 
 	public void ExitCommand() => Process.GetCurrentProcess().CloseMainWindow();

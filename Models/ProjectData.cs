@@ -10,6 +10,7 @@ namespace RokuroEditor.Models;
 
 public class ProjectData : ReactiveObject
 {
+	ObservableCollection<Scene> _scenes = new();
 	string _consoleLog = "";
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
@@ -18,7 +19,12 @@ public class ProjectData : ReactiveObject
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
 	public string DotNetPath { get; set; } = "dotnet";
-	public ObservableCollection<Scene> Scenes { get; set; } = new();
+
+	public ObservableCollection<Scene> Scenes
+	{
+		get => _scenes;
+		set => this.RaiseAndSetIfChanged(ref _scenes, value);
+	}
 
 	public string ConsoleLog
 	{
@@ -85,7 +91,6 @@ public class ProjectData : ReactiveObject
 		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
 			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!)));
 
-		this.RaisePropertyChanged(nameof(Scenes));
 		return true;
 	}
 
@@ -102,6 +107,14 @@ public class ProjectData : ReactiveObject
 				JsonConvert.SerializeObject(scene.ToDto())));
 
 		return true;
+	}
+
+	public void CloseProject()
+	{
+		ProjectPath = null;
+		ProjectName = null;
+		Scenes = new();
+		ConsoleLog = "";
 	}
 
 	public void AddScene()

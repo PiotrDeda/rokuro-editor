@@ -33,8 +33,7 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Could not create project:");
-				Console.WriteLine(e);
+				ProjectData.ConsoleLog += $"Could not create project:\n{e}";
 			}
 		ProjectData.LoadProject();
 	}

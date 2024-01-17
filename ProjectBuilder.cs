@@ -1,16 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace RokuroEditor;
 
 public static class ProjectBuilder
 {
-	public static void CreateProject(string projectPath, string projectName, string dotNetPath)
+	public static string CreateProject(string projectPath, string projectName, string dotNetPath)
 	{
+		string output;
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
@@ -21,10 +22,11 @@ public static class ProjectBuilder
 							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\"",
 				CreateNoWindow = true,
 				UseShellExecute = false,
-				RedirectStandardOutput = true
+				RedirectStandardOutput = true,
+				StandardOutputEncoding = Encoding.UTF8
 			};
 			process.Start();
-			Console.Write(process.StandardOutput.ReadToEnd());
+			output = process.StandardOutput.ReadToEnd();
 			process.WaitForExit();
 		}
 
@@ -37,10 +39,13 @@ public static class ProjectBuilder
 
 		// TODO: Remove when nuget package is published
 		File.Copy("assets_editor/templates/csproj.cstemplate", $"{projectPath}/{projectName}.csproj", true);
+
+		return output;
 	}
 
-	public static void Build(string projectPath, string projectName, string dotNetPath)
+	public static string Build(string projectPath, string projectName, string dotNetPath)
 	{
+		string output;
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
@@ -49,12 +54,14 @@ public static class ProjectBuilder
 					$"/C {dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}",
 				CreateNoWindow = true,
 				UseShellExecute = false,
-				RedirectStandardOutput = true
+				RedirectStandardOutput = true,
+				StandardOutputEncoding = Encoding.UTF8
 			};
 			process.Start();
-			Console.Write(process.StandardOutput.ReadToEnd());
+			output = process.StandardOutput.ReadToEnd();
 			process.WaitForExit();
 		}
+		return output;
 	}
 
 	public static Process Run(Process process, string projectName)

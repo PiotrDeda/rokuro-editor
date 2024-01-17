@@ -29,7 +29,7 @@
 					<p:ScenePropertiesPanel DataContext="{Binding PropertiesPanelViewModel}" />
 				</TabItem>
 			</TabControl>
-			<p:ConsolePanel Grid.Row="2" Grid.Column="1" />
+			<p:ConsolePanel Grid.Row="2" Grid.Column="1" DataContext="{Binding ConsolePanelViewModel}" />
 		</Grid>
 	</DockPanel>
 </Window>

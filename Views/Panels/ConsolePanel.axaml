@@ -2,12 +2,23 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:RokuroEditor.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:ConsolePanelViewModel"
 			 x:Class="RokuroEditor.Views.Panels.ConsolePanel">
+	<Design.DataContext>
+		<vm:ConsolePanelViewModel />
+	</Design.DataContext>
+
 	<Grid Background="DarkGray" RowDefinitions="Auto, *" ColumnDefinitions="*">
 		<Border Grid.Row="0" Background="LightYellow" Padding="5">
-			<TextBlock FontWeight="Bold" Text="Console" />
+			<DockPanel>
+				<Button DockPanel.Dock="Right" Content="Clear" Height="20" Padding="0"
+						Command="{Binding ClearCommand}" />
+				<TextBlock FontWeight="Bold" Text="Console" />
+			</DockPanel>
 		</Border>
-		<TextBox Grid.Row="1" Background="WhiteSmoke" AcceptsReturn="True" IsReadOnly="True" />
+		<TextBox Grid.Row="1" Background="WhiteSmoke" AcceptsReturn="True" IsReadOnly="True"
+				 Text="{Binding ProjectData.ConsoleLog}" />
 	</Grid>
 </UserControl>

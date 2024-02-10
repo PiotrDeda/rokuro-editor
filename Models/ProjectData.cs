@@ -88,7 +88,7 @@ public class ProjectData : ReactiveObject
 		if (ProjectPath == null || ProjectName == null || BuildProject() == false)
 			return false;
 
-		Log('\n' + string.Join("\n", ProjectBuilder.GetGameObjectTypes(ProjectName).Select(type => type.Name)));
+		Log('\n' + string.Join("\n", ProjectBuilder.GetGameObjectTypes(ProjectName).Select(type => type.Name)) + '\n');
 		Scenes = new();
 		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
 			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!)));

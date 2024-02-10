@@ -18,7 +18,7 @@
 				<TextBlock FontWeight="Bold" Text="Console" />
 			</DockPanel>
 		</Border>
-		<TextBox Grid.Row="1" Background="WhiteSmoke" AcceptsReturn="True" IsReadOnly="True"
+		<TextBox Grid.Row="1" Name="ConsoleTextBox" Background="WhiteSmoke" AcceptsReturn="True" IsReadOnly="True"
 				 Text="{Binding ProjectData.ConsoleLog}" />
 	</Grid>
 </UserControl>

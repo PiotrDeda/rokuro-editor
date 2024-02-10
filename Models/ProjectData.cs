@@ -10,8 +10,8 @@ namespace RokuroEditor.Models;
 
 public class ProjectData : ReactiveObject
 {
-	ObservableCollection<Scene> _scenes = new();
 	string _consoleLog = "";
+	ObservableCollection<Scene> _scenes = new();
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
@@ -50,6 +50,8 @@ public class ProjectData : ReactiveObject
 		set => this.RaiseAndSetIfChanged(ref _selectedCamera, value);
 	}
 
+	public void Log(string message) => ConsoleLog += message;
+
 	public void SetProjectPathAndName(string? projectPath)
 	{
 		if (projectPath != null)
@@ -64,7 +66,7 @@ public class ProjectData : ReactiveObject
 	{
 		if (ProjectPath == null || ProjectName == null)
 			return false;
-		ConsoleLog += ProjectBuilder.Build(ProjectPath, ProjectName, DotNetPath);
+		ProjectBuilder.Build(ProjectPath, ProjectName, DotNetPath, Log);
 		return true;
 	}
 
@@ -76,7 +78,7 @@ public class ProjectData : ReactiveObject
 		if (Directory.EnumerateFileSystemEntries(ProjectPath).Any())
 			throw new($"Selected directory (\"{ProjectPath}\") is not empty");
 
-		ConsoleLog += ProjectBuilder.CreateProject(ProjectPath, ProjectName, DotNetPath);
+		ProjectBuilder.CreateProject(ProjectPath, ProjectName, DotNetPath, Log);
 
 		return true;
 	}

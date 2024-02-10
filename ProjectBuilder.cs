@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -9,9 +11,8 @@ namespace RokuroEditor;
 
 public static class ProjectBuilder
 {
-	public static string CreateProject(string projectPath, string projectName, string dotNetPath)
+	public static void CreateProject(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
-		string output;
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
@@ -26,7 +27,7 @@ public static class ProjectBuilder
 				StandardOutputEncoding = Encoding.UTF8
 			};
 			process.Start();
-			output = process.StandardOutput.ReadToEnd();
+			log(process.StandardOutput.ReadToEnd());
 			process.WaitForExit();
 		}
 
@@ -39,13 +40,10 @@ public static class ProjectBuilder
 
 		// TODO: Remove when nuget package is published
 		File.Copy("assets_editor/templates/csproj.cstemplate", $"{projectPath}/{projectName}.csproj", true);
-
-		return output;
 	}
 
-	public static string Build(string projectPath, string projectName, string dotNetPath)
+	public static void Build(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
-		string output;
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
@@ -58,16 +56,22 @@ public static class ProjectBuilder
 				StandardOutputEncoding = Encoding.UTF8
 			};
 			process.Start();
-			output = process.StandardOutput.ReadToEnd();
+			log(process.StandardOutput.ReadToEnd());
 			process.WaitForExit();
 		}
-		return output;
 	}
 
-	public static Process Run(Process process, string projectName)
+	public static Process Run(Process process, string projectName, Action<string> log)
 	{
 		process.StartInfo.FileName = $"build/{projectName}/{projectName}.exe";
 		process.StartInfo.WorkingDirectory = $"build/{projectName}";
+		process.StartInfo.UseShellExecute = false;
+		process.StartInfo.RedirectStandardOutput = true;
+		process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+		process.OutputDataReceived += (_, args) => {
+			if (!string.IsNullOrEmpty(args.Data))
+				log(args.Data);
+		};
 		process.Start();
 		return process;
 	}

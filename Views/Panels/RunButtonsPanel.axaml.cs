@@ -44,7 +44,8 @@ public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewMo
 			return;
 		}
 
-		await ProjectBuilder.Run(RunProcess, ViewModel.ProjectData.ProjectName!).WaitForExitAsync();
+		await ProjectBuilder.Run(RunProcess, ViewModel.ProjectData.ProjectName!, ViewModel.ProjectData.Log)
+			.WaitForExitAsync();
 	}
 
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]

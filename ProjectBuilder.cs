@@ -28,8 +28,10 @@ public static class ProjectBuilder
 				RedirectStandardOutput = true,
 				StandardOutputEncoding = Encoding.UTF8
 			};
+			log("= Creating project...\n");
 			process.Start();
 			log(process.StandardOutput.ReadToEnd());
+			log("= Finished creating project\n");
 			process.WaitForExit();
 		}
 
@@ -57,8 +59,10 @@ public static class ProjectBuilder
 				RedirectStandardOutput = true,
 				StandardOutputEncoding = Encoding.UTF8
 			};
+			log("= Building project...\n");
 			process.Start();
 			log(process.StandardOutput.ReadToEnd());
+			log("= Finished building project\n");
 			process.WaitForExit();
 		}
 	}
@@ -74,6 +78,7 @@ public static class ProjectBuilder
 			if (!string.IsNullOrEmpty(args.Data))
 				log(args.Data);
 		};
+		log("= Running project...\n");
 		process.Start();
 		return process;
 	}

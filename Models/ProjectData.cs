@@ -62,14 +62,6 @@ public class ProjectData : ReactiveObject
 		}
 	}
 
-	public bool BuildProject()
-	{
-		if (ProjectPath == null || ProjectName == null)
-			return false;
-		ProjectBuilder.Build(ProjectPath, ProjectName, DotNetPath, Log);
-		return true;
-	}
-
 	public bool NewProject()
 	{
 		if (ProjectPath == null || ProjectName == null)
@@ -83,12 +75,20 @@ public class ProjectData : ReactiveObject
 		return true;
 	}
 
-	public bool LoadProject()
+	public bool BuildProject()
 	{
 		if (ProjectPath == null || ProjectName == null)
 			return false;
+		ProjectBuilder.Build(ProjectPath, ProjectName, DotNetPath, Log);
+		return true;
+	}
 
-		BuildProject();
+	public bool LoadProject()
+	{
+		if (ProjectPath == null || ProjectName == null || BuildProject() == false)
+			return false;
+
+		Log('\n' + string.Join("\n", ProjectBuilder.GetGameObjectTypes(ProjectName).Select(type => type.Name)));
 		Scenes = new();
 		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
 			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!)));

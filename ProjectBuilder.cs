@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using RokuroEditor.Models;
+using GameObject = Rokuro.Objects.GameObject;
 
 namespace RokuroEditor;
 
@@ -74,6 +76,26 @@ public static class ProjectBuilder
 		};
 		process.Start();
 		return process;
+	}
+
+	public static List<GameObjectType> GetGameObjectTypes(string projectName)
+	{
+		string projectAssemblyPath = $"build/{projectName}/{projectName}.dll";
+		string rokuroAssemblyPath = $"build/{projectName}/Rokuro.dll";
+		var resolver = new PathAssemblyResolver(new List<string> {
+			projectAssemblyPath,
+			rokuroAssemblyPath,
+			typeof(object).Assembly.Location,
+			typeof(object).Assembly.Location.Replace("System.Private.CoreLib.dll", "System.Runtime.dll")
+		});
+		using var mlc = new MetadataLoadContext(resolver, typeof(object).Assembly.GetName().ToString());
+		Assembly projectAssembly = mlc.LoadFromAssemblyPath(projectAssemblyPath);
+		Assembly rokuroAssembly = mlc.LoadFromAssemblyPath(rokuroAssemblyPath);
+
+		Type gameObjectType = rokuroAssembly.GetType(typeof(GameObject).FullName!)!;
+		return rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
+			.Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => new GameObjectType(type.FullName!)).ToList();
 	}
 
 	public static List<string> GetScenePaths(string projectName) =>

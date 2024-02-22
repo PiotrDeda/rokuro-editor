@@ -30,6 +30,7 @@
 	<ItemGroup>
 		<Content Include="assets_editor\**\*.*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
 		</Content>
 	</ItemGroup>
 

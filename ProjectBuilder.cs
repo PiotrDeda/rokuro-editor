@@ -22,7 +22,10 @@ public static class ProjectBuilder
 				Arguments = $"/C {dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
 							$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
 							$"cd {projectPath} && " +
-							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\"",
+							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" &&" +
+							$"{dotNetPath} add package Rokuro --source https://nuget.pkg.github.com/PiotrDeda/index.json &&" +
+							$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 &&" +
+							$"{dotNetPath} restore",
 				CreateNoWindow = true,
 				UseShellExecute = false,
 				RedirectStandardOutput = true,
@@ -41,9 +44,6 @@ public static class ProjectBuilder
 		File.WriteAllLines($"{projectPath}/Program.cs", File.ReadAllLines($"{projectPath}/Program.cs")
 			.Select(line => line.Replace("%{ProjectName}%", sanitizedProjectName))
 		);
-
-		// TODO: Remove when nuget package is published
-		File.Copy("assets_editor/templates/csproj.cstemplate", $"{projectPath}/{projectName}.csproj", true);
 	}
 
 	public static void Build(string projectPath, string projectName, string dotNetPath, Action<string> log)

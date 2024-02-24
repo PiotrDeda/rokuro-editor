@@ -15,6 +15,7 @@ public class ProjectData : ReactiveObject
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
+	ObservableCollection<GameObjectType> _gameObjectTypes = new();
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
@@ -48,6 +49,12 @@ public class ProjectData : ReactiveObject
 	{
 		get => _selectedCamera;
 		set => this.RaiseAndSetIfChanged(ref _selectedCamera, value);
+	}
+
+	public ObservableCollection<GameObjectType> GameObjectTypes
+	{
+		get => _gameObjectTypes;
+		set => this.RaiseAndSetIfChanged(ref _gameObjectTypes, value);
 	}
 
 	public void Log(string message) => ConsoleLog += message;
@@ -88,11 +95,11 @@ public class ProjectData : ReactiveObject
 		if (ProjectPath == null || ProjectName == null || BuildProject() == false)
 			return false;
 
-		Log("= Loaded types:\n");
-		ProjectBuilder.GetGameObjectTypes(ProjectName).ForEach(type => Log($"= - {type.Name}\n"));
+		GameObjectTypes = new(ProjectBuilder.GetGameObjectTypes(ProjectName));
 		Scenes = new();
 		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
-			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!)));
+			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!,
+				GameObjectTypes.ToList())));
 
 		return true;
 	}
@@ -131,7 +138,8 @@ public class ProjectData : ReactiveObject
 		if (SelectedScene == null)
 			return;
 
-		SelectedScene.GameObjects.Add(new("New Object", "", "Rokuro.Objects.GameObject", "Camera", 0, 0));
+		SelectedScene.GameObjects.Add(new("New Object", "",
+			GameObjectTypes.Single(t => t.Name == "Rokuro.Objects.GameObject"), "Camera", 0, 0));
 		SelectedGameObject = SelectedScene.GameObjects.Last();
 	}
 
@@ -194,14 +202,15 @@ public class ProjectData : ReactiveObject
 
 		// = GameObjects =
 		// == Scene 0 ==
-		Scenes[0].GameObjects.Add(new("Player", "tiles/player", "Rokuro.Player", "Camera", 0, 0));
+		Scenes[0].GameObjects.Add(new("Player", "tiles/player", new("Rokuro.Player", new()), "Camera", 0, 0));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Health", "10"));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Damage", "1"));
-		Scenes[0].GameObjects.Add(new("Enemy", "tiles/enemy", "Rokuro.Enemies.Enemy", "Camera", 0, 0));
-		Scenes[0].GameObjects.Add(new("Item", "tiles/item", "Rokuro.Items.Item", "UI Camera", 0, 0));
+		Scenes[0].GameObjects.Add(new("Enemy", "tiles/enemy", new("Rokuro.Enemies.Enemy", new()), "Camera", 0, 0));
+		Scenes[0].GameObjects.Add(new("Item", "tiles/item", new("Rokuro.Items.Item", new()), "UI Camera", 0, 0));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
-			Scenes[1].GameObjects.Add(new($"GameObject{i}", "GameObject", "Rokuro.GameObject", $"Camera{i}", 0, 0));
+			Scenes[1].GameObjects.Add(new($"GameObject{i}", "GameObject", new("Rokuro.GameObject", new()), $"Camera{i}",
+				0, 0));
 		foreach (int i in Enumerable.Range(0, 100))
 			Scenes[1].GameObjects[0].CustomProperties.Add(new($"Property{i}", $"Value{i}"));
 	}

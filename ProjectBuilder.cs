@@ -100,7 +100,7 @@ public static class ProjectBuilder
 		Type gameObjectType = rokuroAssembly.GetType(typeof(GameObject).FullName!)!;
 		return rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
 			.Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => new GameObjectType(type.FullName!)).ToList();
+			.Select(type => GameObjectType.FromType(type)).ToList();
 	}
 
 	public static List<string> GetScenePaths(string projectName) =>

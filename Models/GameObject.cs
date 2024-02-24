@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
@@ -5,9 +6,11 @@ using Rokuro.Dtos;
 
 namespace RokuroEditor.Models;
 
-public class GameObject(string name, string sprite, string clazz, string camera, int x, int y) : ReactiveObject
+public class GameObject(string name, string sprite, GameObjectType clazz, string camera, int x, int y) : ReactiveObject
 {
 	string _name = name;
+	GameObjectType _class = clazz;
+	ObservableCollection<CustomProperty> _customProperties = new();
 
 	public string Name
 	{
@@ -16,17 +19,33 @@ public class GameObject(string name, string sprite, string clazz, string camera,
 	}
 
 	public string Sprite { get; set; } = sprite;
-	public string Class { get; set; } = clazz;
+
+	public GameObjectType Class
+	{
+		get => _class;
+		set
+		{
+			_class = value;
+			CustomProperties = new(value.CustomProperties.Select(p => new CustomProperty(p, "")).ToList());
+		}
+	}
+
 	public string Camera { get; set; } = camera;
 	public int X { get; set; } = x;
 	public int Y { get; set; } = y;
-	public ObservableCollection<CustomProperty> CustomProperties { get; set; } = new();
 
-	public static GameObject FromDto(GameObjectDto dto) =>
-		new(dto.Name, dto.Sprite, dto.Class, dto.Camera, dto.X, dto.Y) {
+	public ObservableCollection<CustomProperty> CustomProperties
+	{
+		get => _customProperties;
+		set => this.RaiseAndSetIfChanged(ref _customProperties, value);
+	}
+
+	public static GameObject FromDto(GameObjectDto dto, List<GameObjectType> types) =>
+		new(dto.Name, dto.Sprite, types.FirstOrDefault(t => t.Name == dto.Class) ?? new GameObjectType("null", new()),
+			dto.Camera, dto.X, dto.Y) {
 			CustomProperties = new(dto.CustomProperties.Select(CustomProperty.FromDto))
 		};
 
 	public GameObjectDto ToDto() =>
-		new(Name, Sprite, Class, Camera, X, Y, CustomProperties.Select(p => p.ToDto()).ToList());
+		new(Name, Sprite, Class.Name, Camera, X, Y, CustomProperties.Select(p => p.ToDto()).ToList());
 }

@@ -11,11 +11,11 @@ namespace RokuroEditor.Models;
 public class ProjectData : ReactiveObject
 {
 	string _consoleLog = "";
+	ObservableCollection<GameObjectType> _gameObjectTypes = new();
 	ObservableCollection<Scene> _scenes = new();
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
-	ObservableCollection<GameObjectType> _gameObjectTypes = new();
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }

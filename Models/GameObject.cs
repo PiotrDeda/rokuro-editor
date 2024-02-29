@@ -8,9 +8,9 @@ namespace RokuroEditor.Models;
 
 public class GameObject(string name, string sprite, GameObjectType clazz, string camera, int x, int y) : ReactiveObject
 {
-	string _name = name;
 	GameObjectType _class = clazz;
 	ObservableCollection<CustomProperty> _customProperties = new();
+	string _name = name;
 
 	public string Name
 	{

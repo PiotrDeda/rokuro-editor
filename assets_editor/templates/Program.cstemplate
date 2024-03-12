@@ -2,11 +2,13 @@ using Rokuro.Core;
 
 namespace %{ProjectName}%;
 
-public class %{ProjectName}% : Project
+public class %{ProjectName}%
 {
 	static void Main()
 	{
-		App.SetupAndRun(new %{ProjectName}%(), new("%{ProjectName}%", new(0, 0, 0), 1280, 720));
+		App.Setup(new("%{ProjectName}%", new(0, 0, 0), 1280, 720));
+		Init();
+		App.Run();
 	}
 
 	public override void Init()

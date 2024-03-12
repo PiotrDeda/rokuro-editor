@@ -6,10 +6,18 @@ using Rokuro.Dtos;
 
 namespace RokuroEditor.Models;
 
-public class GameObject(string name, string sprite, GameObjectType clazz, string camera, int x, int y) : ReactiveObject
+public class GameObject(
+	string name,
+	GameObjectType clazz,
+	SpriteType spriteType,
+	string sprite,
+	string camera,
+	int x,
+	int y,
+	ObservableCollection<CustomProperty> customProperties) : ReactiveObject
 {
 	GameObjectType _class = clazz;
-	ObservableCollection<CustomProperty> _customProperties = new();
+	ObservableCollection<CustomProperty> _customProperties = customProperties;
 	string _name = name;
 
 	public string Name
@@ -17,8 +25,6 @@ public class GameObject(string name, string sprite, GameObjectType clazz, string
 		get => _name;
 		set => this.RaiseAndSetIfChanged(ref _name, value);
 	}
-
-	public string Sprite { get; set; } = sprite;
 
 	public GameObjectType Class
 	{
@@ -30,6 +36,8 @@ public class GameObject(string name, string sprite, GameObjectType clazz, string
 		}
 	}
 
+	public SpriteType SpriteType { get; set; } = spriteType;
+	public string Sprite { get; set; } = sprite;
 	public string Camera { get; set; } = camera;
 	public int X { get; set; } = x;
 	public int Y { get; set; } = y;
@@ -40,12 +48,19 @@ public class GameObject(string name, string sprite, GameObjectType clazz, string
 		set => this.RaiseAndSetIfChanged(ref _customProperties, value);
 	}
 
-	public static GameObject FromDto(GameObjectDto dto, List<GameObjectType> types) =>
-		new(dto.Name, dto.Sprite, types.FirstOrDefault(t => t.Name == dto.Class) ?? new GameObjectType("null", new()),
-			dto.Camera, dto.X, dto.Y) {
-			CustomProperties = new(dto.CustomProperties.Select(CustomProperty.FromDto))
-		};
+	public static GameObject FromDto(GameObjectDto dto, List<GameObjectType> gameObjectTypes,
+		List<SpriteType> spriteTypes) =>
+		new(
+			dto.Name,
+			gameObjectTypes.FirstOrDefault(t => t.Name == dto.Class) ?? new GameObjectType("null", new()),
+			spriteTypes.FirstOrDefault(t => t.Name == dto.SpriteType) ?? new SpriteType("null"),
+			dto.Sprite, dto.Camera, dto.X, dto.Y, new(dto.CustomProperties.Select(CustomProperty.FromDto))
+		);
 
-	public GameObjectDto ToDto() =>
-		new(Name, Sprite, Class.Name, Camera, X, Y, CustomProperties.Select(p => p.ToDto()).ToList());
+	public GameObjectDto ToDto()
+	{
+		string spriteType = Class.Name == "Rokuro.Objects.TextObject" ? "Rokuro.Graphics.TextSprite" : SpriteType.Name;
+		return new(Name, Class.Name, spriteType, Sprite, Camera, X, Y,
+			CustomProperties.Select(p => p.ToDto()).ToList());
+	}
 }

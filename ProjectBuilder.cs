@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Rokuro.Graphics;
 using RokuroEditor.Models;
 using GameObject = Rokuro.Objects.GameObject;
 
@@ -83,7 +85,7 @@ public static class ProjectBuilder
 		return process;
 	}
 
-	public static List<GameObjectType> GetGameObjectTypes(string projectName)
+	public static (ObservableCollection<GameObjectType>, ObservableCollection<SpriteType>) GetTypes(string projectName)
 	{
 		string projectAssemblyPath = $"build/{projectName}/{projectName}.dll";
 		string rokuroAssemblyPath = $"build/{projectName}/Rokuro.dll";
@@ -98,9 +100,13 @@ public static class ProjectBuilder
 		Assembly rokuroAssembly = mlc.LoadFromAssemblyPath(rokuroAssemblyPath);
 
 		Type gameObjectType = rokuroAssembly.GetType(typeof(GameObject).FullName!)!;
-		return rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
-			.Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => GameObjectType.FromType(type)).ToList();
+		Type spriteType = rokuroAssembly.GetType(typeof(Sprite).FullName!)!;
+		return (new(rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
+				.Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
+				.Select(type => GameObjectType.FromType(type)).ToList()),
+			new(rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
+				.Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
+				.Select(type => new SpriteType(type.FullName!)).ToList()));
 	}
 
 	public static List<string> GetScenePaths(string projectName) =>

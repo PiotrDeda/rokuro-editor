@@ -16,6 +16,7 @@ public class ProjectData : ReactiveObject
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
+	ObservableCollection<SpriteType> _spriteTypes = new();
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
@@ -57,6 +58,12 @@ public class ProjectData : ReactiveObject
 		set => this.RaiseAndSetIfChanged(ref _gameObjectTypes, value);
 	}
 
+	public ObservableCollection<SpriteType> SpriteTypes
+	{
+		get => _spriteTypes;
+		set => this.RaiseAndSetIfChanged(ref _spriteTypes, value);
+	}
+
 	public void Log(string message) => ConsoleLog += message;
 
 	public void SetProjectPathAndName(string? projectPath)
@@ -95,11 +102,11 @@ public class ProjectData : ReactiveObject
 		if (ProjectPath == null || ProjectName == null || BuildProject() == false)
 			return false;
 
-		GameObjectTypes = new(ProjectBuilder.GetGameObjectTypes(ProjectName));
+		(GameObjectTypes, SpriteTypes) = ProjectBuilder.GetTypes(ProjectName);
 		Scenes = new();
 		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
 			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!,
-				GameObjectTypes.ToList())));
+				GameObjectTypes.ToList(), SpriteTypes.ToList())));
 
 		return true;
 	}
@@ -124,12 +131,17 @@ public class ProjectData : ReactiveObject
 		ProjectPath = null;
 		ProjectName = null;
 		Scenes = new();
+		SelectedScene = null;
+		SelectedGameObject = null;
+		SelectedCamera = null;
 		ConsoleLog = "";
+		GameObjectTypes = new();
+		SpriteTypes = new();
 	}
 
 	public void AddScene()
 	{
-		Scenes.Add(new("New Scene"));
+		Scenes.Add(new("New Scene", new(), new()));
 		SelectedScene = Scenes.Last();
 	}
 
@@ -138,8 +150,9 @@ public class ProjectData : ReactiveObject
 		if (SelectedScene == null)
 			return;
 
-		SelectedScene.GameObjects.Add(new("New Object", "",
-			GameObjectTypes.Single(t => t.Name == "Rokuro.Objects.GameObject"), "Camera", 0, 0));
+		SelectedScene.GameObjects.Add(new("New Object",
+			GameObjectTypes.Single(t => t.Name == "Rokuro.Objects.GameObject"),
+			SpriteTypes.Single(t => t.Name == "Rokuro.Graphics.StaticSprite"), "", "Camera", 0, 0, new()));
 		SelectedGameObject = SelectedScene.GameObjects.Last();
 	}
 
@@ -190,7 +203,8 @@ public class ProjectData : ReactiveObject
 			ConsoleLog += $"Sample console log line {i}\n";
 
 		// = Scenes =
-		Scenes = new() { new("Game Example"), new("Many Objects"), new("Empty") };
+		Scenes = new()
+			{ new("Game Example", new(), new()), new("Many Objects", new(), new()), new("Empty", new(), new()) };
 
 		// = Cameras =
 		// == Scene 0 ==
@@ -202,15 +216,18 @@ public class ProjectData : ReactiveObject
 
 		// = GameObjects =
 		// == Scene 0 ==
-		Scenes[0].GameObjects.Add(new("Player", "tiles/player", new("Rokuro.Player", new()), "Camera", 0, 0));
+		Scenes[0].GameObjects.Add(new("Player", new("Rokuro.Player", new()), new("Rokuro.Graphics.StaticSprite"),
+			"tiles/player", "Camera", 0, 0, new()));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Health", "10"));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Damage", "1"));
-		Scenes[0].GameObjects.Add(new("Enemy", "tiles/enemy", new("Rokuro.Enemies.Enemy", new()), "Camera", 0, 0));
-		Scenes[0].GameObjects.Add(new("Item", "tiles/item", new("Rokuro.Items.Item", new()), "UI Camera", 0, 0));
+		Scenes[0].GameObjects.Add(new("Enemy", new("Rokuro.Enemies.Enemy", new()), new("Rokuro.Graphics.StaticSprite"),
+			"tiles/enemy", "Camera", 0, 0, new()));
+		Scenes[0].GameObjects.Add(new("Item", new("Rokuro.Items.Item", new()), new("Rokuro.Graphics.StaticSprite"),
+			"tiles/item", "UI Camera", 0, 0, new()));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
-			Scenes[1].GameObjects.Add(new($"GameObject{i}", "GameObject", new("Rokuro.GameObject", new()), $"Camera{i}",
-				0, 0));
+			Scenes[1].GameObjects.Add(new($"GameObject{i}", new("Rokuro.Objects.GameObject", new()),
+				new("Rokuro.Graphics.StaticSprite"), "items/blank_item", $"Camera{i}", 0, 0, new()));
 		foreach (int i in Enumerable.Range(0, 100))
 			Scenes[1].GameObjects[0].CustomProperties.Add(new($"Property{i}", $"Value{i}"));
 	}

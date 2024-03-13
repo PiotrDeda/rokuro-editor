@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
@@ -48,12 +47,11 @@ public class GameObject(
 		set => this.RaiseAndSetIfChanged(ref _customProperties, value);
 	}
 
-	public static GameObject FromDto(GameObjectDto dto, List<GameObjectType> gameObjectTypes,
-		List<SpriteType> spriteTypes) =>
+	public static GameObject FromDto(GameObjectDto dto, ProjectTypes types) =>
 		new(
 			dto.Name,
-			gameObjectTypes.FirstOrDefault(t => t.Name == dto.Class) ?? new GameObjectType("null", new()),
-			spriteTypes.FirstOrDefault(t => t.Name == dto.SpriteType) ?? new SpriteType("null"),
+			types.GameObjectTypes.FirstOrDefault(t => t.Name == dto.Class) ?? new GameObjectType("null", new()),
+			types.SpriteTypes.FirstOrDefault(t => t.Name == dto.SpriteType) ?? new SpriteType("null"),
 			dto.Sprite, dto.Camera, dto.X, dto.Y, new(dto.CustomProperties.Select(CustomProperty.FromDto))
 		);
 

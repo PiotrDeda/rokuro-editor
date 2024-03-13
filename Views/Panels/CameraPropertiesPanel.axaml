@@ -18,9 +18,32 @@
 
 		<controls:PropertyControl DockPanel.Dock="Top" Label="Name"
 								  Value="{Binding ProjectData.SelectedCamera.Name, Mode=TwoWay}" />
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Class"
-								  Value="{Binding ProjectData.SelectedCamera.Class, Mode=TwoWay}" />
+		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *" Margin="5">
+			<TextBlock Grid.Column="0" Text="Class" VerticalAlignment="Center" Margin="0,0,5,0" />
+			<ComboBox Grid.Column="1" ItemsSource="{Binding ProjectData.ProjectTypes.CameraTypes}"
+					  SelectedItem="{Binding ProjectData.SelectedCamera.Class, Mode=TwoWay}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding Name}" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+		</Grid>
 
 		<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete camera" Command="{Binding DeleteCameraCommand}" />
+
+		<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
+			<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"
+					   Text="Custom properties:" />
+			<ScrollViewer DockPanel.Dock="Top">
+				<ItemsControl ItemsSource="{Binding ProjectData.SelectedCamera.CustomProperties}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<controls:PropertyControl Label="{Binding Name}" Value="{Binding Value, Mode=TwoWay}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</DockPanel>
 	</DockPanel>
 </UserControl>

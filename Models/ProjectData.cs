@@ -11,12 +11,10 @@ namespace RokuroEditor.Models;
 public class ProjectData : ReactiveObject
 {
 	string _consoleLog = "";
-	ObservableCollection<GameObjectType> _gameObjectTypes = new();
 	ObservableCollection<Scene> _scenes = new();
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
-	ObservableCollection<SpriteType> _spriteTypes = new();
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
@@ -52,17 +50,7 @@ public class ProjectData : ReactiveObject
 		set => this.RaiseAndSetIfChanged(ref _selectedCamera, value);
 	}
 
-	public ObservableCollection<GameObjectType> GameObjectTypes
-	{
-		get => _gameObjectTypes;
-		set => this.RaiseAndSetIfChanged(ref _gameObjectTypes, value);
-	}
-
-	public ObservableCollection<SpriteType> SpriteTypes
-	{
-		get => _spriteTypes;
-		set => this.RaiseAndSetIfChanged(ref _spriteTypes, value);
-	}
+	public ProjectTypes ProjectTypes { get; set; } = new();
 
 	public void Log(string message) => ConsoleLog += message;
 
@@ -102,11 +90,11 @@ public class ProjectData : ReactiveObject
 		if (ProjectPath == null || ProjectName == null || BuildProject() == false)
 			return false;
 
-		(GameObjectTypes, SpriteTypes) = ProjectBuilder.GetTypes(ProjectName);
+		ProjectTypes = ProjectBuilder.GetTypes(ProjectName);
 		Scenes = new();
 		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
 			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!,
-				GameObjectTypes.ToList(), SpriteTypes.ToList())));
+				ProjectTypes)));
 
 		return true;
 	}
@@ -135,8 +123,7 @@ public class ProjectData : ReactiveObject
 		SelectedGameObject = null;
 		SelectedCamera = null;
 		ConsoleLog = "";
-		GameObjectTypes = new();
-		SpriteTypes = new();
+		ProjectTypes = new();
 	}
 
 	public void AddScene()
@@ -151,8 +138,9 @@ public class ProjectData : ReactiveObject
 			return;
 
 		SelectedScene.GameObjects.Add(new("New Object",
-			GameObjectTypes.Single(t => t.Name == "Rokuro.Objects.GameObject"),
-			SpriteTypes.Single(t => t.Name == "Rokuro.Graphics.StaticSprite"), "", "Camera", 0, 0, new()));
+			ProjectTypes.GameObjectTypes.Single(t => t.Name == "Rokuro.Objects.GameObject"),
+			ProjectTypes.SpriteTypes.Single(t => t.Name == "Rokuro.Graphics.StaticSprite"),
+			"", "Camera", 0, 0, new()));
 		SelectedGameObject = SelectedScene.GameObjects.Last();
 	}
 
@@ -161,7 +149,9 @@ public class ProjectData : ReactiveObject
 		if (SelectedScene == null)
 			return;
 
-		SelectedScene.Cameras.Add(new("New Camera", "Rokuro.Graphics.Camera"));
+		SelectedScene.Cameras.Add(new("New Camera",
+			ProjectTypes.CameraTypes.Single(t => t.Name == "Rokuro.Graphics.Camera"),
+			new()));
 		SelectedCamera = SelectedScene.Cameras.Last();
 	}
 
@@ -208,11 +198,11 @@ public class ProjectData : ReactiveObject
 
 		// = Cameras =
 		// == Scene 0 ==
-		Scenes[0].Cameras.Add(new("Camera", "Rokuro.Graphics.Camera"));
-		Scenes[0].Cameras.Add(new("UI Camera", "Rokuro.Graphics.UICamera"));
+		Scenes[0].Cameras.Add(new("Camera", new("Rokuro.Graphics.Camera", new()), new()));
+		Scenes[0].Cameras.Add(new("UI Camera", new("Rokuro.Graphics.UICamera", new()), new()));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
-			Scenes[1].Cameras.Add(new($"Camera{i}", "Rokuro.Graphics.Camera"));
+			Scenes[1].Cameras.Add(new($"Camera{i}", new("Rokuro.Graphics.Camera", new()), new()));
 
 		// = GameObjects =
 		// == Scene 0 ==

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
@@ -20,13 +19,13 @@ public class Scene(string name, ObservableCollection<GameObject> gameObjects, Ob
 	public ObservableCollection<GameObject> GameObjects { get; set; } = gameObjects;
 	public ObservableCollection<Camera> Cameras { get; set; } = cameras;
 
-	public static Scene FromDto(SceneDto dto, List<GameObjectType> gameObjectTypes, List<SpriteType> spriteTypes) =>
+	public static Scene FromDto(SceneDto dto, ProjectTypes types) =>
 		new(
 			dto.Name,
-			new(dto.GameObjects.Select(x => GameObject.FromDto(x, gameObjectTypes, spriteTypes))),
-			new(dto.Cameras.Select(Camera.FromDto))
+			new(dto.GameObjects.Select(gameObjectDto => GameObject.FromDto(gameObjectDto, types))),
+			new(dto.Cameras.Select(cameraDto => Camera.FromDto(cameraDto, types)))
 		);
 
-	public SceneDto ToDto() => new(Name, GameObjects.Select(x => x.ToDto()).ToList(),
-		Cameras.Select(x => x.ToDto()).ToList());
+	public SceneDto ToDto() => new(Name, GameObjects.Select(go => go.ToDto()).ToList(),
+		Cameras.Select(c => c.ToDto()).ToList());
 }

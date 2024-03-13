@@ -15,6 +15,7 @@ public class ProjectData : ReactiveObject
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
+	ProjectTypes _projectTypes = new();
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
@@ -50,7 +51,11 @@ public class ProjectData : ReactiveObject
 		set => this.RaiseAndSetIfChanged(ref _selectedCamera, value);
 	}
 
-	public ProjectTypes ProjectTypes { get; set; } = new();
+	public ProjectTypes ProjectTypes
+	{
+		get => _projectTypes;
+		set => this.RaiseAndSetIfChanged(ref _projectTypes, value);
+	}
 
 	public void Log(string message) => ConsoleLog += message;
 

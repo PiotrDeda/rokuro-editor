@@ -11,11 +11,11 @@ namespace RokuroEditor.Models;
 public class ProjectData : ReactiveObject
 {
 	string _consoleLog = "";
+	ProjectTypes _projectTypes = new();
 	ObservableCollection<Scene> _scenes = new();
 	Camera? _selectedCamera;
 	GameObject? _selectedGameObject;
 	Scene? _selectedScene;
-	ProjectTypes _projectTypes = new();
 
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
@@ -145,7 +145,7 @@ public class ProjectData : ReactiveObject
 		SelectedScene.GameObjects.Add(new("New Object",
 			ProjectTypes.GameObjectTypes.Single(t => t.Name == "Rokuro.Objects.GameObject"),
 			ProjectTypes.SpriteTypes.Single(t => t.Name == "Rokuro.Graphics.StaticSprite"),
-			"", "Camera", 0, 0, new()));
+			"", "Camera", 0, 0, 1, 1, 0, false, false, new()));
 		SelectedGameObject = SelectedScene.GameObjects.Last();
 	}
 
@@ -212,17 +212,18 @@ public class ProjectData : ReactiveObject
 		// = GameObjects =
 		// == Scene 0 ==
 		Scenes[0].GameObjects.Add(new("Player", new("Rokuro.Player", new()), new("Rokuro.Graphics.StaticSprite"),
-			"tiles/player", "Camera", 0, 0, new()));
+			"tiles/player", "Camera", 0, 0, 1, 1, 0, false, false, new()));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Health", "10"));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Damage", "1"));
 		Scenes[0].GameObjects.Add(new("Enemy", new("Rokuro.Enemies.Enemy", new()), new("Rokuro.Graphics.StaticSprite"),
-			"tiles/enemy", "Camera", 0, 0, new()));
+			"tiles/enemy", "Camera", 0, 0, 1, 1, 0, false, false, new()));
 		Scenes[0].GameObjects.Add(new("Item", new("Rokuro.Items.Item", new()), new("Rokuro.Graphics.StaticSprite"),
-			"tiles/item", "UI Camera", 0, 0, new()));
+			"tiles/item", "UI Camera", 0, 0, 1, 1, 0, false, false, new()));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
 			Scenes[1].GameObjects.Add(new($"GameObject{i}", new("Rokuro.Objects.GameObject", new()),
-				new("Rokuro.Graphics.StaticSprite"), "items/blank_item", $"Camera{i}", 0, 0, new()));
+				new("Rokuro.Graphics.StaticSprite"), "items/blank_item", $"Camera{i}",
+				0, 0, 1, 1, 0, false, false, new()));
 		foreach (int i in Enumerable.Range(0, 100))
 			Scenes[1].GameObjects[0].CustomProperties.Add(new($"Property{i}", $"Value{i}"));
 	}

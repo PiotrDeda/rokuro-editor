@@ -52,9 +52,27 @@
 								  Value="{Binding ProjectData.SelectedGameObject.Sprite, Mode=TwoWay}" />
 		<controls:PropertyControl DockPanel.Dock="Top" Label="Camera"
 								  Value="{Binding ProjectData.SelectedGameObject.Camera, Mode=TwoWay}" />
-		<Grid DockPanel.Dock="Top" ColumnDefinitions="*, *">
-			<controls:PropertyControl Grid.Column="0" Label="X" Value="{Binding ProjectData.SelectedGameObject.X, Mode=TwoWay}" />
-			<controls:PropertyControl Grid.Column="1" Label="Y" Value="{Binding ProjectData.SelectedGameObject.Y, Mode=TwoWay}" />
+		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, *">
+			<TextBlock Grid.Column="0" Text="Position:" VerticalAlignment="Center" Margin="5,5,5,5" />
+			<controls:PropertyControl Grid.Column="1" Label="X"
+									  Value="{Binding ProjectData.SelectedGameObject.PositionX, Mode=TwoWay}" />
+			<controls:PropertyControl Grid.Column="2" Label="Y"
+									  Value="{Binding ProjectData.SelectedGameObject.PositionY, Mode=TwoWay}" />
+		</Grid>
+		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, *">
+			<TextBlock Grid.Column="0" Text="Scale:" VerticalAlignment="Center" Margin="5,5,5,5" />
+			<controls:PropertyControl Grid.Column="1" Label="X"
+									  Value="{Binding ProjectData.SelectedGameObject.ScaleX, Mode=TwoWay}" />
+			<controls:PropertyControl Grid.Column="2" Label="Y"
+									  Value="{Binding ProjectData.SelectedGameObject.ScaleY, Mode=TwoWay}" />
+		</Grid>
+		<controls:PropertyControl DockPanel.Dock="Top" Label="Rotation"
+								  Value="{Binding ProjectData.SelectedGameObject.Rotation, Mode=TwoWay}" />
+		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, Auto, *" Margin="5,5,5,0">
+			<CheckBox Grid.Column="0" IsChecked="{Binding ProjectData.SelectedGameObject.FlipX, Mode=TwoWay}" />
+			<TextBlock Grid.Column="1" Text="Flip X" VerticalAlignment="Center" />
+			<CheckBox Grid.Column="2" IsChecked="{Binding ProjectData.SelectedGameObject.FlipY, Mode=TwoWay}" />
+			<TextBlock Grid.Column="3" Text="Flip Y" VerticalAlignment="Center" />
 		</Grid>
 
 		<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete object"

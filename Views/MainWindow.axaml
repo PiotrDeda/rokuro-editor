@@ -17,7 +17,7 @@
 		<Grid Background="Gray" RowDefinitions="*, 12*, 4*" ColumnDefinitions="3*, 12*, 3*">
 			<p:RunButtonsPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding RunButtonsPanelViewModel}" />
 			<p:ListPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" DataContext="{Binding ListPanelViewModel}" />
-			<Panel Grid.Row="1" Grid.Column="1" Background="LightGray" />
+			<p:GamePreviewPanel Grid.Row="1" Grid.Column="1" DataContext="{Binding GamePreviewViewModel}" />
 			<TabControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Padding="0">
 				<TabItem Header="Object" Padding="5" FontSize="16">
 					<p:GameObjectPropertiesPanel DataContext="{Binding PropertiesPanelViewModel}" />

@@ -11,6 +11,7 @@ public class MainWindowViewModel : ViewModelBase
 		MenuPanelViewModel = new(ProjectData);
 		PropertiesPanelViewModel = new(ProjectData);
 		ConsolePanelViewModel = new(ProjectData);
+		GamePreviewViewModel = new(ProjectData);
 	}
 
 	public ListPanelViewModel ListPanelViewModel { get; }
@@ -18,6 +19,7 @@ public class MainWindowViewModel : ViewModelBase
 	public RunButtonsPanelViewModel RunButtonsPanelViewModel { get; }
 	public PropertiesPanelViewModel PropertiesPanelViewModel { get; }
 	public ConsolePanelViewModel ConsolePanelViewModel { get; }
+	public GamePreviewViewModel GamePreviewViewModel { get; }
 
 	ProjectData ProjectData { get; } = new();
 }

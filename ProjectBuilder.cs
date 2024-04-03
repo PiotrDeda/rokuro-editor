@@ -19,6 +19,7 @@ public static class ProjectBuilder
 	static readonly string Cmd = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "cmd.exe" : "bash";
 	static readonly string ArgBegin = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "/C " : "-c \"";
 	static readonly string ArgEnd = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "" : "\"";
+	static readonly string Ext = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".exe" : "";
 
 	public static void CreateProject(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
@@ -31,7 +32,7 @@ public static class ProjectBuilder
 							$"cd {projectPath} && " +
 							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" && " +
 							$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
-							$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json && " +
+							$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
 							$"{dotNetPath} add package Rokuro && " +
 							$"{dotNetPath} restore{ArgEnd}",
 				CreateNoWindow = true,
@@ -77,7 +78,7 @@ public static class ProjectBuilder
 
 	public static Process Run(Process process, string projectName, Action<string> log)
 	{
-		process.StartInfo.FileName = $"build/{projectName}/{projectName}.exe";
+		process.StartInfo.FileName = $"build/{projectName}/{projectName}{Ext}";
 		process.StartInfo.WorkingDirectory = $"build/{projectName}";
 		process.StartInfo.UseShellExecute = false;
 		process.StartInfo.RedirectStandardOutput = true;

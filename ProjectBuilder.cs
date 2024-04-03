@@ -17,7 +17,8 @@ namespace RokuroEditor;
 public static class ProjectBuilder
 {
 	static readonly string Cmd = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "cmd.exe" : "bash";
-	static readonly string Arg = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "/C" : "-c";
+	static readonly string ArgBegin = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "/C " : "-c \"";
+	static readonly string ArgEnd = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "" : "\"";
 
 	public static void CreateProject(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
@@ -25,13 +26,14 @@ public static class ProjectBuilder
 		{
 			process.StartInfo = new() {
 				FileName = Cmd,
-				Arguments = $"{Arg} {dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
+				Arguments = $"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
 							$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
 							$"cd {projectPath} && " +
-							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" &&" +
-							$"{dotNetPath} add package Rokuro --source https://f.feedz.io/rokuro/rokuro/nuget/index.json &&" +
-							$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 &&" +
-							$"{dotNetPath} restore",
+							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" && " +
+							$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
+							$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json && " +
+							$"{dotNetPath} add package Rokuro && " +
+							$"{dotNetPath} restore{ArgEnd}",
 				CreateNoWindow = true,
 				UseShellExecute = false,
 				RedirectStandardOutput = true,
@@ -59,7 +61,7 @@ public static class ProjectBuilder
 			process.StartInfo = new() {
 				FileName = Cmd,
 				Arguments =
-					$"{Arg} {dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}",
+					$"{ArgBegin}{dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}{ArgEnd}",
 				CreateNoWindow = true,
 				UseShellExecute = false,
 				RedirectStandardOutput = true,

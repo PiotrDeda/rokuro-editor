@@ -63,9 +63,10 @@ public class ProjectData : ReactiveObject
 	{
 		if (projectPath != null)
 		{
-			ProjectPath = projectPath.Split('\\').Take(projectPath.Split('\\').Length - 1)
-				.Aggregate((a, b) => $"{a}\\{b}");
-			ProjectName = projectPath.Split('\\').Last().Split('.').First();
+			ProjectPath = projectPath.Split(Path.DirectorySeparatorChar)
+				.Take(projectPath.Split(Path.DirectorySeparatorChar).Length - 1)
+				.Aggregate((a, b) => $"{a}{Path.DirectorySeparatorChar}{b}");
+			ProjectName = projectPath.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
 		}
 	}
 

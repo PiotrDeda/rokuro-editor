@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Rokuro.Graphics;
@@ -15,17 +16,20 @@ namespace RokuroEditor;
 
 public static class ProjectBuilder
 {
+	static readonly string Cmd = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "cmd.exe" : "bash";
+	static readonly string Arg = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "/C" : "-c";
+
 	public static void CreateProject(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
-				FileName = "cmd.exe",
-				Arguments = $"/C {dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
+				FileName = Cmd,
+				Arguments = $"{Arg} {dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
 							$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
 							$"cd {projectPath} && " +
 							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" &&" +
-							$"{dotNetPath} add package Rokuro --source https://nuget.pkg.github.com/PiotrDeda/index.json &&" +
+							$"{dotNetPath} add package Rokuro --source https://f.feedz.io/rokuro/rokuro/nuget/index.json &&" +
 							$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 &&" +
 							$"{dotNetPath} restore",
 				CreateNoWindow = true,
@@ -53,9 +57,9 @@ public static class ProjectBuilder
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
-				FileName = "cmd.exe",
+				FileName = Cmd,
 				Arguments =
-					$"/C {dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}",
+					$"{Arg} {dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}",
 				CreateNoWindow = true,
 				UseShellExecute = false,
 				RedirectStandardOutput = true,

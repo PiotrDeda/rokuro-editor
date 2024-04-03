@@ -11,7 +11,7 @@ public class %{ProjectName}%
 		App.Run();
 	}
 
-	public override void Init()
+	static void Init()
 	{
 		
 	}

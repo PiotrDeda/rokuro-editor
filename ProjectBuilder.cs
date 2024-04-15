@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -26,18 +27,16 @@ public static class ProjectBuilder
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
-				FileName = Cmd,
-				Arguments = $"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
-							$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
-							$"cd {projectPath} && " +
-							$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" && " +
-							$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
-							$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
-							$"{dotNetPath} add package Rokuro && " +
-							$"{dotNetPath} restore{ArgEnd}",
-				CreateNoWindow = true,
-				UseShellExecute = false,
-				RedirectStandardOutput = true,
+				FileName = Cmd, Arguments =
+					$"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
+					$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
+					$"cd {projectPath} && " +
+					$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" && " +
+					$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
+					$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
+					$"{dotNetPath} add package Rokuro && " +
+					$"{dotNetPath} restore{ArgEnd}",
+				CreateNoWindow = true, UseShellExecute = false, RedirectStandardOutput = true,
 				StandardOutputEncoding = Encoding.UTF8
 			};
 			log("= Creating project...\n");
@@ -60,12 +59,9 @@ public static class ProjectBuilder
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
-				FileName = Cmd,
-				Arguments =
+				FileName = Cmd, Arguments =
 					$"{ArgBegin}{dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}{ArgEnd}",
-				CreateNoWindow = true,
-				UseShellExecute = false,
-				RedirectStandardOutput = true,
+				CreateNoWindow = true, UseShellExecute = false, RedirectStandardOutput = true,
 				StandardOutputEncoding = Encoding.UTF8
 			};
 			log("= Building project...\n");
@@ -97,9 +93,7 @@ public static class ProjectBuilder
 		string projectAssemblyPath = $"build/{projectName}/{projectName}.dll";
 		string rokuroAssemblyPath = $"build/{projectName}/Rokuro.dll";
 		var resolver = new PathAssemblyResolver(new List<string> {
-			projectAssemblyPath,
-			rokuroAssemblyPath,
-			typeof(object).Assembly.Location,
+			projectAssemblyPath, rokuroAssemblyPath, typeof(object).Assembly.Location,
 			typeof(object).Assembly.Location.Replace("System.Private.CoreLib.dll", "System.Runtime.dll")
 		});
 		using var mlc = new MetadataLoadContext(resolver, typeof(object).Assembly.GetName().ToString());
@@ -107,17 +101,26 @@ public static class ProjectBuilder
 		Assembly rokuroAssembly = mlc.LoadFromAssemblyPath(rokuroAssemblyPath);
 
 		Type gameObjectType = rokuroAssembly.GetType(typeof(GameObject).FullName!)!;
+		List<GameObjectType> gameObjectTypesList = new(rokuroAssembly.GetTypes()
+			.Concat(projectAssembly.GetTypes())
+			.Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => GameObjectType.FromType(type)).ToList());
+		gameObjectTypesList.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+		ObservableCollection<GameObjectType> gameObjectTypes = new(gameObjectTypesList);
+
 		Type cameraType = rokuroAssembly.GetType(typeof(Camera).FullName!)!;
+		ObservableCollection<CameraType> cameraTypes = new(rokuroAssembly.GetTypes()
+			.Concat(projectAssembly.GetTypes())
+			.Where(type => cameraType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => CameraType.FromType(type)).ToList());
+
 		Type spriteType = rokuroAssembly.GetType(typeof(Sprite).FullName!)!;
-		return new(new(rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
-				.Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
-				.Select(type => GameObjectType.FromType(type)).ToList()),
-			new(rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
-				.Where(type => cameraType.IsAssignableFrom(type) && !type.IsAbstract)
-				.Select(type => CameraType.FromType(type)).ToList()),
-			new(rokuroAssembly.GetTypes().Concat(projectAssembly.GetTypes())
-				.Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
-				.Select(type => new SpriteType(type.FullName!)).ToList()));
+		ObservableCollection<SpriteType> spriteTypes = new(rokuroAssembly.GetTypes()
+			.Concat(projectAssembly.GetTypes())
+			.Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => new SpriteType(type.FullName!)).ToList());
+
+		return new(gameObjectTypes, cameraTypes, spriteTypes);
 	}
 
 	public static List<string> GetScenePaths(string projectName) =>

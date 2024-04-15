@@ -27,7 +27,8 @@ public static class ProjectBuilder
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
-				FileName = Cmd, Arguments =
+				FileName = Cmd,
+				Arguments =
 					$"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
 					$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
 					$"cd {projectPath} && " +
@@ -36,7 +37,9 @@ public static class ProjectBuilder
 					$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
 					$"{dotNetPath} add package Rokuro && " +
 					$"{dotNetPath} restore{ArgEnd}",
-				CreateNoWindow = true, UseShellExecute = false, RedirectStandardOutput = true,
+				CreateNoWindow = true,
+				UseShellExecute = false,
+				RedirectStandardOutput = true,
 				StandardOutputEncoding = Encoding.UTF8
 			};
 			log("= Creating project...\n");
@@ -59,9 +62,12 @@ public static class ProjectBuilder
 		using (var process = new Process())
 		{
 			process.StartInfo = new() {
-				FileName = Cmd, Arguments =
+				FileName = Cmd,
+				Arguments =
 					$"{ArgBegin}{dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}{ArgEnd}",
-				CreateNoWindow = true, UseShellExecute = false, RedirectStandardOutput = true,
+				CreateNoWindow = true,
+				UseShellExecute = false,
+				RedirectStandardOutput = true,
 				StandardOutputEncoding = Encoding.UTF8
 			};
 			log("= Building project...\n");
@@ -93,7 +99,9 @@ public static class ProjectBuilder
 		string projectAssemblyPath = $"build/{projectName}/{projectName}.dll";
 		string rokuroAssemblyPath = $"build/{projectName}/Rokuro.dll";
 		var resolver = new PathAssemblyResolver(new List<string> {
-			projectAssemblyPath, rokuroAssemblyPath, typeof(object).Assembly.Location,
+			projectAssemblyPath,
+			rokuroAssemblyPath,
+			typeof(object).Assembly.Location,
 			typeof(object).Assembly.Location.Replace("System.Private.CoreLib.dll", "System.Runtime.dll")
 		});
 		using var mlc = new MetadataLoadContext(resolver, typeof(object).Assembly.GetName().ToString());

@@ -101,24 +101,19 @@ public static class ProjectBuilder
 		Assembly rokuroAssembly = mlc.LoadFromAssemblyPath(rokuroAssemblyPath);
 
 		Type gameObjectType = rokuroAssembly.GetType(typeof(GameObject).FullName!)!;
-		List<GameObjectType> gameObjectTypesList = new(rokuroAssembly.GetTypes()
-			.Concat(projectAssembly.GetTypes())
-			.Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => GameObjectType.FromType(type)).ToList());
-		gameObjectTypesList.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
-		ObservableCollection<GameObjectType> gameObjectTypes = new(gameObjectTypesList);
+		ObservableCollection<GameObjectType> gameObjectTypes = new(rokuroAssembly.GetTypes()
+			.Concat(projectAssembly.GetTypes()).Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => GameObjectType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
 
 		Type cameraType = rokuroAssembly.GetType(typeof(Camera).FullName!)!;
 		ObservableCollection<CameraType> cameraTypes = new(rokuroAssembly.GetTypes()
-			.Concat(projectAssembly.GetTypes())
-			.Where(type => cameraType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => CameraType.FromType(type)).ToList());
+			.Concat(projectAssembly.GetTypes()).Where(type => cameraType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => CameraType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
 
 		Type spriteType = rokuroAssembly.GetType(typeof(Sprite).FullName!)!;
 		ObservableCollection<SpriteType> spriteTypes = new(rokuroAssembly.GetTypes()
-			.Concat(projectAssembly.GetTypes())
-			.Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => new SpriteType(type.FullName!)).ToList());
+			.Concat(projectAssembly.GetTypes()).Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => new SpriteType(type.FullName!)).OrderBy(type => type.DisplayName).ToList());
 
 		return new(gameObjectTypes, cameraTypes, spriteTypes);
 	}

@@ -134,7 +134,12 @@ public static class ProjectBuilder
 			.Concat(projectAssembly.GetTypes()).Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
 			.Select(type => new SpriteType(type.FullName!)).OrderBy(type => type.DisplayName).ToList());
 
-		return new(gameObjectTypes, cameraTypes, spriteTypes);
+		Type sceneType = rokuroAssembly.GetType("Rokuro.Graphics.Scene")!;
+		ObservableCollection<SceneType> sceneTypes = new(rokuroAssembly.GetTypes()
+			.Concat(projectAssembly.GetTypes()).Where(type => sceneType.IsAssignableFrom(type) && !type.IsAbstract)
+			.Select(type => SceneType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
+
+		return new(gameObjectTypes, cameraTypes, spriteTypes, sceneTypes);
 	}
 
 	public static List<string> GetScenePaths(string projectName) =>

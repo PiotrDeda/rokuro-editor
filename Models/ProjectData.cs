@@ -142,7 +142,9 @@ public class ProjectData : ReactiveObject
 
 	public void AddScene()
 	{
-		Scenes.Add(new("New Scene", new(), new()));
+		Scenes.Add(new("New Scene",
+			ProjectTypes.SceneTypes.Single(t => t.Name == "Rokuro.Graphics.Scene"),
+			new(), new(), new()));
 		SelectedScene = Scenes.Last();
 	}
 
@@ -207,8 +209,11 @@ public class ProjectData : ReactiveObject
 			ConsoleLog += $"Sample console log line {i}\n";
 
 		// = Scenes =
-		Scenes = new()
-			{ new("Game Example", new(), new()), new("Many Objects", new(), new()), new("Empty", new(), new()) };
+		Scenes = new() {
+			new("Game Example", new("Rokuro.Graphics.Scene", new()), new(), new(), new()),
+			new("Many Objects", new("Rokuro.Graphics.Scene", new()), new(), new(), new()),
+			new("Empty", new("Rokuro.Graphics.Scene", new()), new(), new(), new())
+		};
 
 		// = Cameras =
 		// == Scene 0 ==

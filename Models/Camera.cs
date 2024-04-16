@@ -5,8 +5,7 @@ using RokuroEditor.Dtos;
 
 namespace RokuroEditor.Models;
 
-public class Camera(string name, CameraType clazz, ObservableCollection<CustomProperty> customProperties)
-	: ReactiveObject
+public class Camera(string name, CameraType clazz, ObservableCollection<CustomProperty> customProperties) : ReactiveObject
 {
 	ObservableCollection<CustomProperty> _customProperties = customProperties;
 	string _name = name;

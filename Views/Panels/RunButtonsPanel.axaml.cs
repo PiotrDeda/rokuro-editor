@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
@@ -44,8 +45,16 @@ public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewMo
 			return;
 		}
 
-		await ProjectBuilder.Run(RunProcess, ViewModel.ProjectData.ProjectName!, ViewModel.ProjectData.Log)
-			.WaitForExitAsync();
+		try
+		{
+			await ProjectBuilder.Run(RunProcess, ViewModel.ProjectData.ProjectName!, ViewModel.ProjectData.Log)
+				.WaitForExitAsync();
+		}
+		catch (Exception exception)
+		{
+			IsRunning = false;
+			ViewModel!.ProjectData.Log(exception.ToString());
+		}
 	}
 
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]

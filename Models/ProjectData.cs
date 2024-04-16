@@ -96,11 +96,19 @@ public class ProjectData : ReactiveObject
 		if (ProjectPath == null || ProjectName == null || BuildProject() == false)
 			return false;
 
-		ProjectTypes = ProjectBuilder.GetTypes(ProjectName);
-		Scenes = new();
-		ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
-			Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!,
-				ProjectTypes)));
+		try
+		{
+			ProjectTypes = ProjectBuilder.GetTypes(ProjectName);
+			Scenes = new();
+			ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
+				Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!,
+					ProjectTypes)));
+		}
+		catch (Exception e)
+		{
+			Log(e.ToString());
+			return false;
+		}
 
 		return true;
 	}

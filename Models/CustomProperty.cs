@@ -1,4 +1,4 @@
-using Rokuro.Dtos;
+using RokuroEditor.Dtos;
 
 namespace RokuroEditor.Models;
 

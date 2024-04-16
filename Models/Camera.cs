@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
-using Rokuro.Dtos;
+using RokuroEditor.Dtos;
 
 namespace RokuroEditor.Models;
 

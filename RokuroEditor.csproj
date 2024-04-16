@@ -9,10 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Rokuro\Rokuro.csproj"/>
-	</ItemGroup>
-
-	<ItemGroup>
 		<AvaloniaResource Include="Assets\**"/>
 	</ItemGroup>
 

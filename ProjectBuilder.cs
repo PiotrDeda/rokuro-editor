@@ -8,10 +8,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using Rokuro.Graphics;
 using RokuroEditor.Models;
-using Camera = Rokuro.Graphics.Camera;
-using GameObject = Rokuro.Objects.GameObject;
 
 namespace RokuroEditor;
 
@@ -122,17 +119,17 @@ public static class ProjectBuilder
 		Assembly projectAssembly = mlc.LoadFromAssemblyPath(projectAssemblyPath);
 		Assembly rokuroAssembly = mlc.LoadFromAssemblyPath(rokuroAssemblyPath);
 
-		Type gameObjectType = rokuroAssembly.GetType(typeof(GameObject).FullName!)!;
+		Type gameObjectType = rokuroAssembly.GetType("Rokuro.Objects.GameObject")!;
 		ObservableCollection<GameObjectType> gameObjectTypes = new(rokuroAssembly.GetTypes()
 			.Concat(projectAssembly.GetTypes()).Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
 			.Select(type => GameObjectType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
 
-		Type cameraType = rokuroAssembly.GetType(typeof(Camera).FullName!)!;
+		Type cameraType = rokuroAssembly.GetType("Rokuro.Graphics.Camera")!;
 		ObservableCollection<CameraType> cameraTypes = new(rokuroAssembly.GetTypes()
 			.Concat(projectAssembly.GetTypes()).Where(type => cameraType.IsAssignableFrom(type) && !type.IsAbstract)
 			.Select(type => CameraType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
 
-		Type spriteType = rokuroAssembly.GetType(typeof(Sprite).FullName!)!;
+		Type spriteType = rokuroAssembly.GetType("Rokuro.Graphics.Sprite")!;
 		ObservableCollection<SpriteType> spriteTypes = new(rokuroAssembly.GetTypes()
 			.Concat(projectAssembly.GetTypes()).Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
 			.Select(type => new SpriteType(type.FullName!)).OrderBy(type => type.DisplayName).ToList());

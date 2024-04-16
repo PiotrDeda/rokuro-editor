@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using ReactiveUI;
-using Rokuro.Dtos;
+using RokuroEditor.Dtos;
 
 namespace RokuroEditor.Models;
 

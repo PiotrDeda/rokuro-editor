@@ -29,7 +29,7 @@ public static class ProjectBuilder
 					$"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
 					$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
 					$"cd {projectPath} && " +
-					$"{dotNetPath} sln add \"{Path.Combine(projectName, projectName)}.csproj\" && " +
+					$"{dotNetPath} sln add \"{projectName}.csproj\" && " +
 					$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
 					$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
 					$"{dotNetPath} add package Rokuro && " +

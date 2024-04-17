@@ -15,4 +15,17 @@ public static class %{ProjectName}%
 	{
 		
 	}
+
+    /*
+    [[!!!]]
+    Add the following to %{ProjectName}%.csproj
+    [[!!!]]
+
+    <ItemGroup>
+	    <Content Include="assets\**\*.*">
+		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		    <PackageCopyToOutput>true</PackageCopyToOutput>
+	    </Content>
+    </ItemGroup>
+    */
 }

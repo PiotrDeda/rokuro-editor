@@ -129,9 +129,9 @@ public static class ProjectBuilder
 		return new(gameObjectTypes, cameraTypes, spriteTypes, sceneTypes);
 	}
 
-	public static List<string> GetScenePaths(string projectName) =>
-		Directory.Exists(Path.Combine("build", projectName, "assets", "autogen", "scenes"))
-			? Directory.GetFiles(Path.Combine("build", projectName, "assets", "autogen", "scenes"), "*.json",
+	public static List<string> GetScenePaths(string projectPath) =>
+		Directory.Exists(Path.Combine(projectPath, "assets", "autogen", "scenes"))
+			? Directory.GetFiles(Path.Combine(projectPath, "assets", "autogen", "scenes"), "*.json",
 				SearchOption.AllDirectories).ToList()
 			: new();
 }

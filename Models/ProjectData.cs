@@ -121,7 +121,7 @@ public class ProjectData : ReactiveObject
 		{
 			ProjectTypes = ProjectBuilder.GetTypes(ProjectName);
 			Scenes = new();
-			ProjectBuilder.GetScenePaths(ProjectName).ForEach(scenePath =>
+			ProjectBuilder.GetScenePaths(ProjectPath).ForEach(scenePath =>
 				Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!,
 					ProjectTypes)));
 		}

@@ -24,6 +24,8 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 	{
 		string? projectPath = await OpenNewProjectMenu.Handle(Unit.Default);
 		if (projectPath is not null)
+		{
+			ProjectData.CloseProject();
 			try
 			{
 				ProjectData.SetProjectPathAndName(projectPath);
@@ -35,6 +37,7 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 				ProjectData.ConsoleLog += $"Could not create project:\n{e}";
 				return;
 			}
+		}
 		if (!ProjectData.NewProject())
 			return;
 		if (!ProjectData.BuildProject())

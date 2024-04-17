@@ -21,71 +21,57 @@ public static class ProjectBuilder
 
 	public static void CreateProject(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
-		try
+		using (var process = new Process())
 		{
-			using (var process = new Process())
-			{
-				process.StartInfo = new() {
-					FileName = Cmd,
-					Arguments =
-						$"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
-						$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
-						$"cd {projectPath} && " +
-						$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" && " +
-						$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
-						$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
-						$"{dotNetPath} add package Rokuro && " +
-						$"{dotNetPath} restore{ArgEnd}",
-					CreateNoWindow = true,
-					UseShellExecute = false,
-					RedirectStandardOutput = true,
-					StandardOutputEncoding = Encoding.UTF8
-				};
-				log("= Creating project...\n");
-				process.Start();
-				log(process.StandardOutput.ReadToEnd());
-				log("= Finished creating project\n");
-				process.WaitForExit();
-			}
+			process.StartInfo = new() {
+				FileName = Cmd,
+				Arguments =
+					$"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
+					$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
+					$"cd {projectPath} && " +
+					$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" && " +
+					$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
+					$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
+					$"{dotNetPath} add package Rokuro && " +
+					$"{dotNetPath} restore{ArgEnd}",
+				CreateNoWindow = true,
+				UseShellExecute = false,
+				RedirectStandardOutput = true,
+				StandardOutputEncoding = Encoding.UTF8
+			};
+			log("= Creating project...\n");
+			process.Start();
+			log(process.StandardOutput.ReadToEnd());
+			log("= Finished creating project\n");
+			process.WaitForExit();
+		}
 
-			File.Copy("assets_editor/templates/Program.cstemplate", $"{projectPath}/Program.cs", true);
-			string sanitizedProjectName = projectName;
-			Regex.Replace(sanitizedProjectName, @"\s+", "");
-			File.WriteAllLines($"{projectPath}/Program.cs", File.ReadAllLines($"{projectPath}/Program.cs")
-				.Select(line => line.Replace("%{ProjectName}%", sanitizedProjectName))
-			);
-		}
-		catch (Exception e)
-		{
-			log(e.ToString());
-		}
+		File.Copy("assets_editor/templates/Program.cstemplate", $"{projectPath}/Program.cs", true);
+		string sanitizedProjectName = projectName;
+		Regex.Replace(sanitizedProjectName, @"\s+", "");
+		File.WriteAllLines($"{projectPath}/Program.cs", File.ReadAllLines($"{projectPath}/Program.cs")
+			.Select(line => line.Replace("%{ProjectName}%", sanitizedProjectName))
+		);
 	}
 
 	public static void Build(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
-		try
+		using (var process = new Process())
 		{
-			using (var process = new Process())
-			{
-				process.StartInfo = new() {
-					FileName = Cmd,
-					Arguments =
-						$"{ArgBegin}{dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}{ArgEnd}",
-					CreateNoWindow = true,
-					UseShellExecute = false,
-					RedirectStandardOutput = true,
-					StandardOutputEncoding = Encoding.UTF8
-				};
-				log("= Building project...\n");
-				process.Start();
-				log(process.StandardOutput.ReadToEnd());
-				log("= Finished building project\n");
-				process.WaitForExit();
-			}
-		}
-		catch (Exception e)
-		{
-			log(e.ToString());
+			process.StartInfo = new() {
+				FileName = Cmd,
+				Arguments =
+					$"{ArgBegin}{dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}{ArgEnd}",
+				CreateNoWindow = true,
+				UseShellExecute = false,
+				RedirectStandardOutput = true,
+				StandardOutputEncoding = Encoding.UTF8
+			};
+			log("= Building project...\n");
+			process.Start();
+			log(process.StandardOutput.ReadToEnd());
+			log("= Finished building project\n");
+			process.WaitForExit();
 		}
 	}
 

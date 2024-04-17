@@ -29,18 +29,24 @@ public class MenuPanelViewModel(ProjectData projectData) : ViewModelBase
 				ProjectData.SetProjectPathAndName(projectPath);
 				if (!Directory.Exists(ProjectData.ProjectPath))
 					Directory.CreateDirectory(ProjectData.ProjectPath!);
-				ProjectData.NewProject();
 			}
 			catch (Exception e)
 			{
 				ProjectData.ConsoleLog += $"Could not create project:\n{e}";
+				return;
 			}
+		if (!ProjectData.NewProject())
+			return;
+		if (!ProjectData.BuildProject())
+			return;
 		ProjectData.LoadProject();
 	}
 
 	public async void OpenProjectCommand()
 	{
 		ProjectData.SetProjectPathAndName(await SelectProjectPath.Handle("Open Project"));
+		if (!ProjectData.BuildProject())
+			return;
 		ProjectData.LoadProject();
 	}
 

@@ -76,9 +76,20 @@ public class ProjectData : ReactiveObject
 			return false;
 
 		if (Directory.EnumerateFileSystemEntries(ProjectPath).Any())
-			throw new($"Selected directory (\"{ProjectPath}\") is not empty");
+		{
+			Log($"Selected directory (\"{ProjectPath}\") is not empty");
+			return false;
+		}
 
-		ProjectBuilder.CreateProject(ProjectPath, ProjectName, DotNetPath, Log);
+		try
+		{
+			ProjectBuilder.CreateProject(ProjectPath, ProjectName, DotNetPath, Log);
+		}
+		catch (Exception e)
+		{
+			Log(e.ToString());
+			return false;
+		}
 
 		return true;
 	}
@@ -87,13 +98,23 @@ public class ProjectData : ReactiveObject
 	{
 		if (ProjectPath == null || ProjectName == null)
 			return false;
-		ProjectBuilder.Build(ProjectPath, ProjectName, DotNetPath, Log);
+
+		try
+		{
+			ProjectBuilder.Build(ProjectPath, ProjectName, DotNetPath, Log);
+		}
+		catch (Exception e)
+		{
+			Log(e.ToString());
+			return false;
+		}
+
 		return true;
 	}
 
 	public bool LoadProject()
 	{
-		if (ProjectPath == null || ProjectName == null || BuildProject() == false)
+		if (ProjectPath == null || ProjectName == null)
 			return false;
 
 		try
@@ -118,12 +139,19 @@ public class ProjectData : ReactiveObject
 		if (ProjectPath == null || ProjectName == null)
 			return false;
 
-		Directory.CreateDirectory($"{ProjectPath}/assets/autogen/data/scenes");
-		Array.ForEach(Directory.GetFiles($"{ProjectPath}/assets/autogen/data/scenes"), File.Delete);
-
-		Scenes.ToList().ForEach(scene =>
-			File.WriteAllText($"{ProjectPath}/assets/autogen/data/scenes/{scene.Name}.json",
-				JsonConvert.SerializeObject(scene.ToDto())));
+		try
+		{
+			Directory.CreateDirectory($"{ProjectPath}/assets/autogen/data/scenes");
+			Array.ForEach(Directory.GetFiles($"{ProjectPath}/assets/autogen/data/scenes"), File.Delete);
+			Scenes.ToList().ForEach(scene =>
+				File.WriteAllText($"{ProjectPath}/assets/autogen/data/scenes/{scene.Name}.json",
+					JsonConvert.SerializeObject(scene.ToDto())));
+		}
+		catch (Exception e)
+		{
+			Log(e.ToString());
+			return false;
+		}
 
 		return true;
 	}
@@ -137,6 +165,15 @@ public class ProjectData : ReactiveObject
 		SelectedGameObject = null;
 		SelectedCamera = null;
 		ConsoleLog = "";
+		ProjectTypes = new();
+	}
+
+	public void ClearLoadedData()
+	{
+		Scenes = new();
+		SelectedScene = null;
+		SelectedGameObject = null;
+		SelectedCamera = null;
 		ProjectTypes = new();
 	}
 

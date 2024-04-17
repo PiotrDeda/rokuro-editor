@@ -27,7 +27,7 @@ public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewMo
 	bool IsRunning { get; set; }
 	Process RunProcess { get; }
 	string NoProjectOpenMessage => "No project is open";
-	string CannotReloadMessage => "Cannot reload while running";
+	string CannotReloadWhileRunningMessage => "Cannot reload while running";
 
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 	async void RunButton_OnClick(object? sender, RoutedEventArgs e)
@@ -67,17 +67,22 @@ public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewMo
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 	void ReloadButton_OnClick(object? sender, RoutedEventArgs e)
 	{
-		if (IsRunning)
-		{
-			ViewModel!.FlyoutMessage = CannotReloadMessage;
-			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
-			return;
-		}
-
-		if (!ViewModel!.ProjectData.LoadProject())
+		if (ViewModel!.ProjectData.ProjectPath == null || ViewModel!.ProjectData.ProjectName == null)
 		{
 			ViewModel!.FlyoutMessage = NoProjectOpenMessage;
 			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
 		}
+
+		if (IsRunning)
+		{
+			ViewModel!.FlyoutMessage = CannotReloadWhileRunningMessage;
+			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
+			return;
+		}
+
+		ViewModel!.ProjectData.SaveProject();
+		ViewModel!.ProjectData.BuildProject();
+		ViewModel!.ProjectData.ClearLoadedData();
+		ViewModel!.ProjectData.LoadProject();
 	}
 }

@@ -23,6 +23,15 @@ public class GameObject(
 	GameObjectType _class = clazz;
 	ObservableCollection<CustomProperty> _customProperties = customProperties;
 	string _name = name;
+	SpriteType _spriteType = spriteType;
+	string _camera = camera;
+	int _positionX = positionX;
+	int _positionY = positionY;
+	double _scaleX = scaleX;
+	double _scaleY = scaleY;
+	double _rotation = rotation;
+	bool _flipX = flipX;
+	bool _flipY = flipY;
 
 	public string Name
 	{
@@ -40,16 +49,61 @@ public class GameObject(
 		}
 	}
 
-	public SpriteType SpriteType { get; set; } = spriteType;
+	public SpriteType SpriteType
+	{
+		get => _spriteType;
+		set => this.RaiseAndSetIfChanged(ref _spriteType, value);
+	}
+
 	public string Sprite { get; set; } = sprite;
-	public string Camera { get; set; } = camera;
-	public int PositionX { get; set; } = positionX;
-	public int PositionY { get; set; } = positionY;
-	public double ScaleX { get; set; } = scaleX;
-	public double ScaleY { get; set; } = scaleY;
-	public double Rotation { get; set; } = rotation;
-	public bool FlipX { get; set; } = flipX;
-	public bool FlipY { get; set; } = flipY;
+
+	public string Camera
+	{
+		get => _camera;
+		set => this.RaiseAndSetIfChanged(ref _camera, value);
+	}
+
+	public int PositionX
+	{
+		get => _positionX;
+		set => this.RaiseAndSetIfChanged(ref _positionX, value);
+	}
+
+	public int PositionY
+	{
+		get => _positionY;
+		set => this.RaiseAndSetIfChanged(ref _positionY, value);
+	}
+
+	public double ScaleX
+	{
+		get => _scaleX;
+		set => this.RaiseAndSetIfChanged(ref _scaleX, value);
+	}
+
+	public double ScaleY
+	{
+		get => _scaleY;
+		set => this.RaiseAndSetIfChanged(ref _scaleY, value);
+	}
+
+	public double Rotation
+	{
+		get => _rotation;
+		set => this.RaiseAndSetIfChanged(ref _rotation, value);
+	}
+
+	public bool FlipX
+	{
+		get => _flipX;
+		set => this.RaiseAndSetIfChanged(ref _flipX, value);
+	}
+
+	public bool FlipY
+	{
+		get => _flipY;
+		set => this.RaiseAndSetIfChanged(ref _flipY, value);
+	}
 
 	public ObservableCollection<CustomProperty> CustomProperties
 	{

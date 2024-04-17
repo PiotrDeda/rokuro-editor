@@ -2,7 +2,7 @@ using Rokuro.Core;
 
 namespace %{ProjectName}%;
 
-public class %{ProjectName}%
+public static class %{ProjectName}%
 {
 	static void Main()
 	{

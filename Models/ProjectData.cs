@@ -141,10 +141,11 @@ public class ProjectData : ReactiveObject
 
 		try
 		{
-			Directory.CreateDirectory($"{ProjectPath}/assets/autogen/data/scenes");
-			Array.ForEach(Directory.GetFiles($"{ProjectPath}/assets/autogen/data/scenes"), File.Delete);
+			string scenesPath = Path.Combine(ProjectPath, "assets", "autogen", "scenes");
+			Directory.CreateDirectory(scenesPath);
+			Array.ForEach(Directory.GetFiles(scenesPath), File.Delete);
 			Scenes.ToList().ForEach(scene =>
-				File.WriteAllText($"{ProjectPath}/assets/autogen/data/scenes/{scene.Name}.json",
+				File.WriteAllText(Path.Combine(scenesPath, $"{scene.Name}.json"),
 					JsonConvert.SerializeObject(scene.ToDto())));
 		}
 		catch (Exception e)

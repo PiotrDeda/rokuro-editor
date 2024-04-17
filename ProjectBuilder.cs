@@ -29,7 +29,7 @@ public static class ProjectBuilder
 					$"{ArgBegin}{dotNetPath} new sln --name \"{projectName}\" --output \"{projectPath}\" && " +
 					$"{dotNetPath} new console --name \"{projectName}\" --output \"{projectPath}\" && " +
 					$"cd {projectPath} && " +
-					$"{dotNetPath} sln add \"{projectPath}/{projectName}.csproj\" && " +
+					$"{dotNetPath} sln add \"{Path.Combine(projectName, projectName)}.csproj\" && " +
 					$"{dotNetPath} add package Sayers.SDL2.Core --version 1.0.11 && " +
 					$"{dotNetPath} nuget add source https://f.feedz.io/rokuro/rokuro/nuget/index.json || " +
 					$"{dotNetPath} add package Rokuro && " +
@@ -46,10 +46,11 @@ public static class ProjectBuilder
 			process.WaitForExit();
 		}
 
-		File.Copy("assets_editor/templates/Program.cstemplate", $"{projectPath}/Program.cs", true);
+		File.Copy(Path.Combine("assets_editor", "templates", "Program.cstemplate"),
+			Path.Combine(projectPath, "Program.cs"), true);
 		string sanitizedProjectName = projectName;
 		Regex.Replace(sanitizedProjectName, @"\s+", "");
-		File.WriteAllLines($"{projectPath}/Program.cs", File.ReadAllLines($"{projectPath}/Program.cs")
+		File.WriteAllLines(Path.Combine(projectPath, "Program.cs"), File.ReadAllLines(Path.Combine(projectPath, "Program.cs"))
 			.Select(line => line.Replace("%{ProjectName}%", sanitizedProjectName))
 		);
 	}
@@ -61,7 +62,7 @@ public static class ProjectBuilder
 			process.StartInfo = new() {
 				FileName = Cmd,
 				Arguments =
-					$"{ArgBegin}{dotNetPath} build \"{projectPath}/{projectName}.csproj\" --output build/{projectName}{ArgEnd}",
+					$"{ArgBegin}{dotNetPath} build \"{Path.Combine(projectPath, projectName)}.csproj\" --output {Path.Combine("build", projectName)}{ArgEnd}",
 				CreateNoWindow = true,
 				UseShellExecute = false,
 				RedirectStandardOutput = true,
@@ -77,8 +78,8 @@ public static class ProjectBuilder
 
 	public static Process Run(Process process, string projectName, Action<string> log)
 	{
-		process.StartInfo.FileName = $"build/{projectName}/{projectName}{Ext}";
-		process.StartInfo.WorkingDirectory = $"build/{projectName}";
+		process.StartInfo.FileName = Path.Combine("build", projectName, $"{projectName}{Ext}");
+		process.StartInfo.WorkingDirectory = Path.Combine("build", projectName);
 		process.StartInfo.UseShellExecute = false;
 		process.StartInfo.RedirectStandardOutput = true;
 		process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
@@ -93,8 +94,8 @@ public static class ProjectBuilder
 
 	public static ProjectTypes GetTypes(string projectName)
 	{
-		string projectAssemblyPath = $"build/{projectName}/{projectName}.dll";
-		string rokuroAssemblyPath = $"build/{projectName}/Rokuro.dll";
+		string projectAssemblyPath = Path.Combine("build", projectName, $"{projectName}.dll");
+		string rokuroAssemblyPath = Path.Combine("build", projectName, "Rokuro.dll");
 		var resolver = new PathAssemblyResolver(new List<string> {
 			projectAssemblyPath,
 			rokuroAssemblyPath,
@@ -129,8 +130,8 @@ public static class ProjectBuilder
 	}
 
 	public static List<string> GetScenePaths(string projectName) =>
-		Directory.Exists($"build/{projectName}/assets/autogen/data/scenes")
-			? Directory.GetFiles($"build/{projectName}/assets/autogen/data/scenes", "*.json",
+		Directory.Exists(Path.Combine("build", projectName, "assets", "autogen", "scenes"))
+			? Directory.GetFiles(Path.Combine("build", projectName, "assets", "autogen", "scenes"), "*.json",
 				SearchOption.AllDirectories).ToList()
 			: new();
 }

@@ -121,7 +121,7 @@ public static class ProjectBuilder
 			.Concat(projectAssembly.GetTypes()).Where(type => spriteType.IsAssignableFrom(type) && !type.IsAbstract)
 			.Select(type => new SpriteType(type.FullName!)).OrderBy(type => type.DisplayName).ToList());
 
-		Type sceneType = rokuroAssembly.GetType("Rokuro.Graphics.Scene")!;
+		Type sceneType = rokuroAssembly.GetType("Rokuro.Objects.Scene")!;
 		ObservableCollection<SceneType> sceneTypes = new(rokuroAssembly.GetTypes()
 			.Concat(projectAssembly.GetTypes()).Where(type => sceneType.IsAssignableFrom(type) && !type.IsAbstract)
 			.Select(type => SceneType.FromType(type)).OrderBy(type => type.DisplayName).ToList());

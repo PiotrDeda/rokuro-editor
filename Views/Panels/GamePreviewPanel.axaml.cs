@@ -75,6 +75,7 @@ public partial class GamePreviewPanel : ReactiveUserControl<GamePreviewViewModel
 					if (File.Exists(configFilename))
 						textureConfig = new DeserializerBuilder()
 							.WithNamingConvention(UnderscoredNamingConvention.Instance)
+							.IgnoreUnmatchedProperties()
 							.Build()
 							.Deserialize<TextureConfigModel>(File.ReadAllText(configFilename));
 				}

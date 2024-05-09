@@ -20,18 +20,18 @@ public class GameObject(
 	bool flipY,
 	ObservableCollection<CustomProperty> customProperties) : ReactiveObject
 {
+	string _camera = camera;
 	GameObjectType _class = clazz;
 	ObservableCollection<CustomProperty> _customProperties = customProperties;
-	string _name = name;
-	SpriteType _spriteType = spriteType;
-	string _camera = camera;
-	int _positionX = positionX;
-	int _positionY = positionY;
-	double _scaleX = scaleX;
-	double _scaleY = scaleY;
-	double _rotation = rotation;
 	bool _flipX = flipX;
 	bool _flipY = flipY;
+	string _name = name;
+	int _positionX = positionX;
+	int _positionY = positionY;
+	double _rotation = rotation;
+	double _scaleX = scaleX;
+	double _scaleY = scaleY;
+	SpriteType _spriteType = spriteType;
 
 	public string Name
 	{

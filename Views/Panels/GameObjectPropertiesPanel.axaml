@@ -22,74 +22,97 @@
 			<TextBlock FontWeight="Bold" Text="Properties" />
 		</Border>
 
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Name"
-								  Value="{Binding ProjectData.SelectedGameObject.Name, Mode=TwoWay}" />
-		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *" Margin="5">
-			<TextBlock Grid.Column="0" Text="Class" VerticalAlignment="Center" Margin="0,0,5,0" />
-			<ComboBox Grid.Column="1" Name="ClassComboBox" ItemsSource="{Binding ProjectData.ProjectTypes.GameObjectTypes}"
-					  SelectedItem="{Binding ProjectData.SelectedGameObject.Class, Mode=TwoWay}">
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding Name}" />
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
-		</Grid>
-		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *" Margin="5"
-			  IsVisible="{Binding SelectedItem, ElementName=ClassComboBox, Converter={StaticResource IsVisibleConv}}">
-			<TextBlock Grid.Column="0" Text="Sprite type" VerticalAlignment="Center" Margin="0,0,5,0" />
-			<ComboBox Grid.Column="1" ItemsSource="{Binding ProjectData.ProjectTypes.SpriteTypes}"
-					  SelectedItem="{Binding ProjectData.SelectedGameObject.SpriteType, Mode=TwoWay}">
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding Name}" />
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
-		</Grid>
-		<controls:PropertyControl DockPanel.Dock="Top"
-								  Label="{Binding SelectedItem, ElementName=ClassComboBox, Converter={StaticResource LabelConv}}"
-								  Value="{Binding ProjectData.SelectedGameObject.Sprite, Mode=TwoWay}" />
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Camera"
-								  Value="{Binding ProjectData.SelectedGameObject.Camera, Mode=TwoWay}" />
-		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, *">
-			<TextBlock Grid.Column="0" Text="Position:" VerticalAlignment="Center" Margin="5,5,5,5" />
-			<controls:PropertyControl Grid.Column="1" Label="X"
-									  Value="{Binding ProjectData.SelectedGameObject.PositionX, Mode=TwoWay}" />
-			<controls:PropertyControl Grid.Column="2" Label="Y"
-									  Value="{Binding ProjectData.SelectedGameObject.PositionY, Mode=TwoWay}" />
-		</Grid>
-		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, *">
-			<TextBlock Grid.Column="0" Text="Scale:" VerticalAlignment="Center" Margin="5,5,5,5" />
-			<controls:PropertyControl Grid.Column="1" Label="X"
-									  Value="{Binding ProjectData.SelectedGameObject.ScaleX, Mode=TwoWay}" />
-			<controls:PropertyControl Grid.Column="2" Label="Y"
-									  Value="{Binding ProjectData.SelectedGameObject.ScaleY, Mode=TwoWay}" />
-		</Grid>
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Rotation"
-								  Value="{Binding ProjectData.SelectedGameObject.Rotation, Mode=TwoWay}" />
-		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, Auto, *" Margin="5,5,5,0">
-			<CheckBox Grid.Column="0" IsChecked="{Binding ProjectData.SelectedGameObject.FlipX, Mode=TwoWay}" />
-			<TextBlock Grid.Column="1" Text="Flip X" VerticalAlignment="Center" />
-			<CheckBox Grid.Column="2" IsChecked="{Binding ProjectData.SelectedGameObject.FlipY, Mode=TwoWay}" />
-			<TextBlock Grid.Column="3" Text="Flip Y" VerticalAlignment="Center" />
-		</Grid>
+		<ScrollViewer DockPanel.Dock="Top">
+			<StackPanel>
+				<!-- Name -->
+				<controls:PropertyControl DockPanel.Dock="Top" Label="Name"
+										  Value="{Binding ProjectData.SelectedGameObject.Name, Mode=TwoWay}" />
 
-		<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete object"
-				Command="{Binding DeleteGameObjectCommand}" />
+				<!-- Object class -->
+				<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *" Margin="5">
+					<TextBlock Grid.Column="0" Text="Class" VerticalAlignment="Center" Margin="0,0,5,0" />
+					<ComboBox Grid.Column="1" Name="ClassComboBox" ItemsSource="{Binding ProjectData.ProjectTypes.GameObjectTypes}"
+							  SelectedItem="{Binding ProjectData.SelectedGameObject.Class, Mode=TwoWay}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding Name}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</Grid>
 
-		<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
-			<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"
-					   Text="Custom properties:" />
-			<ScrollViewer DockPanel.Dock="Top">
-				<ItemsControl ItemsSource="{Binding ProjectData.SelectedGameObject.CustomProperties}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<controls:PropertyControl Label="{Binding Name}" Value="{Binding Value, Mode=TwoWay}" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ScrollViewer>
-		</DockPanel>
+				<!-- Sprite type -->
+				<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *" Margin="5"
+					  IsVisible="{Binding SelectedItem, ElementName=ClassComboBox, Converter={StaticResource IsVisibleConv}}">
+					<TextBlock Grid.Column="0" Text="Sprite type" VerticalAlignment="Center" Margin="0,0,5,0" />
+					<ComboBox Grid.Column="1" ItemsSource="{Binding ProjectData.ProjectTypes.SpriteTypes}"
+							  SelectedItem="{Binding ProjectData.SelectedGameObject.SpriteType, Mode=TwoWay}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding Name}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</Grid>
+
+				<!-- Sprite class / text -->
+				<controls:PropertyControl DockPanel.Dock="Top"
+										  Label="{Binding SelectedItem, ElementName=ClassComboBox, Converter={StaticResource LabelConv}}"
+										  Value="{Binding ProjectData.SelectedGameObject.Sprite, Mode=TwoWay}" />
+
+				<!-- Camera -->
+				<controls:PropertyControl DockPanel.Dock="Top" Label="Camera"
+										  Value="{Binding ProjectData.SelectedGameObject.Camera, Mode=TwoWay}" />
+
+				<!-- Position -->
+				<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, *">
+					<TextBlock Grid.Column="0" Text="Position:" VerticalAlignment="Center" Margin="5,5,5,5" />
+					<controls:PropertyControl Grid.Column="1" Label="X"
+											  Value="{Binding ProjectData.SelectedGameObject.PositionX, Mode=TwoWay}" />
+					<controls:PropertyControl Grid.Column="2" Label="Y"
+											  Value="{Binding ProjectData.SelectedGameObject.PositionY, Mode=TwoWay}" />
+				</Grid>
+
+				<!-- Scale -->
+				<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, *">
+					<TextBlock Grid.Column="0" Text="Scale:" VerticalAlignment="Center" Margin="5,5,5,5" />
+					<controls:PropertyControl Grid.Column="1" Label="X"
+											  Value="{Binding ProjectData.SelectedGameObject.ScaleX, Mode=TwoWay}" />
+					<controls:PropertyControl Grid.Column="2" Label="Y"
+											  Value="{Binding ProjectData.SelectedGameObject.ScaleY, Mode=TwoWay}" />
+				</Grid>
+
+				<!-- Rotation -->
+				<controls:PropertyControl DockPanel.Dock="Top" Label="Rotation"
+										  Value="{Binding ProjectData.SelectedGameObject.Rotation, Mode=TwoWay}" />
+
+				<!-- Flip X/Y -->
+				<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *, Auto, *" Margin="5,5,5,0">
+					<CheckBox Grid.Column="0" IsChecked="{Binding ProjectData.SelectedGameObject.FlipX, Mode=TwoWay}" />
+					<TextBlock Grid.Column="1" Text="Flip X" VerticalAlignment="Center" />
+					<CheckBox Grid.Column="2" IsChecked="{Binding ProjectData.SelectedGameObject.FlipY, Mode=TwoWay}" />
+					<TextBlock Grid.Column="3" Text="Flip Y" VerticalAlignment="Center" />
+				</Grid>
+
+				<!-- Custom properties -->
+				<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
+					<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"
+							   Text="Custom properties:" />
+					<ScrollViewer DockPanel.Dock="Top">
+						<ItemsControl ItemsSource="{Binding ProjectData.SelectedGameObject.CustomProperties}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<controls:PropertyControl Label="{Binding Name}" Value="{Binding Value, Mode=TwoWay}" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+				</DockPanel>
+
+				<!-- Delete -->
+				<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete object" HorizontalAlignment="Right"
+						Command="{Binding DeleteGameObjectCommand}" />
+			</StackPanel>
+		</ScrollViewer>
 	</DockPanel>
 </UserControl>

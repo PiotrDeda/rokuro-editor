@@ -16,34 +16,44 @@
 			<TextBlock FontWeight="Bold" Text="Properties" />
 		</Border>
 
-		<controls:PropertyControl DockPanel.Dock="Top" Label="Name"
-								  Value="{Binding ProjectData.SelectedScene.Name, Mode=TwoWay}" />
-		<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *" Margin="5">
-			<TextBlock Grid.Column="0" Text="Class" VerticalAlignment="Center" Margin="0,0,5,0" />
-			<ComboBox Grid.Column="1" ItemsSource="{Binding ProjectData.ProjectTypes.SceneTypes}"
-					  SelectedItem="{Binding ProjectData.SelectedScene.Class, Mode=TwoWay}">
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding Name}" />
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
-		</Grid>
+		<ScrollViewer DockPanel.Dock="Top">
+			<StackPanel>
+				<!-- Name -->
+				<controls:PropertyControl DockPanel.Dock="Top" Label="Name"
+										  Value="{Binding ProjectData.SelectedScene.Name, Mode=TwoWay}" />
 
-		<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete scene" Command="{Binding DeleteSceneCommand}" />
+				<!-- Scene class -->
+				<Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *" Margin="5">
+					<TextBlock Grid.Column="0" Text="Class" VerticalAlignment="Center" Margin="0,0,5,0" />
+					<ComboBox Grid.Column="1" ItemsSource="{Binding ProjectData.ProjectTypes.SceneTypes}"
+							  SelectedItem="{Binding ProjectData.SelectedScene.Class, Mode=TwoWay}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding DisplayName}" ToolTip.Tip="{Binding Name}" />
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</Grid>
 
-		<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
-			<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"
-					   Text="Custom properties:" />
-			<ScrollViewer DockPanel.Dock="Top">
-				<ItemsControl ItemsSource="{Binding ProjectData.SelectedScene.CustomProperties}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<controls:PropertyControl Label="{Binding Name}" Value="{Binding Value, Mode=TwoWay}" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ScrollViewer>
-		</DockPanel>
+				<!-- Custom properties -->
+				<DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
+					<TextBlock DockPanel.Dock="Top" Background="Gray" FontWeight="Bold" Padding="5,5,5,5"
+							   Text="Custom properties:" />
+					<ScrollViewer DockPanel.Dock="Top">
+						<ItemsControl ItemsSource="{Binding ProjectData.SelectedScene.CustomProperties}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<controls:PropertyControl Label="{Binding Name}" Value="{Binding Value, Mode=TwoWay}" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+				</DockPanel>
+
+				<!-- Delete -->
+				<Button DockPanel.Dock="Bottom" Margin="10" Content="Delete scene" HorizontalAlignment="Right"
+						Command="{Binding DeleteSceneCommand}" />
+			</StackPanel>
+		</ScrollViewer>
 	</DockPanel>
 </UserControl>

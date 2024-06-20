@@ -7,7 +7,7 @@ namespace RokuroEditor.Models;
 public class GameObjectType(string name, List<string> customProperties)
 {
 	public static readonly List<string> ReservedProperties = new()
-		{ "Enabled", "Position", "Sprite", "Camera", "WasMouseoverHandled", "Text", "Color", "Font" };
+		{ "Name", "Enabled", "Position", "Sprite", "Camera", "PhysicsObject", "Coroutines", "WasMouseoverHandled", "Text", "Color", "Font" };
 
 	public string Name { get; } = name;
 	public List<string> CustomProperties { get; } = customProperties;

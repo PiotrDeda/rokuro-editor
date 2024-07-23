@@ -6,8 +6,8 @@
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:DataType="vm:SettingsWindowViewModel"
 		x:Class="RokuroEditor.Views.SettingsWindow"
-		Width="800" Height="450"
-		Title="Settings" WindowStartupLocation="CenterOwner">
+		Width="800" Height="450" ShowInTaskbar="False"
+		Title="Settings" Icon="/Assets/rokuro.ico" WindowStartupLocation="CenterOwner">
 	<Design.DataContext>
 		<vm:SettingsWindowViewModel />
 	</Design.DataContext>

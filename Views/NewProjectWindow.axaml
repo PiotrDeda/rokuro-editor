@@ -6,8 +6,8 @@
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:DataType="vm:NewProjectWindowViewModel"
 		x:Class="RokuroEditor.Views.NewProjectWindow"
-		Width="800" Height="450"
-		Title="New project" WindowStartupLocation="CenterOwner">
+		Width="800" Height="450" ShowInTaskbar="False"
+		Title="New project" Icon="/Assets/rokuro.ico" WindowStartupLocation="CenterOwner">
 	<Design.DataContext>
 		<vm:NewProjectWindowViewModel />
 	</Design.DataContext>

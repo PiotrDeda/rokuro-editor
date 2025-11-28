@@ -10,34 +10,29 @@ public class ProjectTypes(
 	ObservableCollection<SceneType> sceneTypes
 ) : ReactiveObject
 {
-	ObservableCollection<CameraType> _cameraTypes = cameraTypes;
-	ObservableCollection<GameObjectType> _gameObjectTypes = gameObjectTypes;
-	ObservableCollection<SceneType> _sceneTypes = sceneTypes;
-	ObservableCollection<SpriteType> _spriteTypes = spriteTypes;
-
-	public ProjectTypes() : this(new(), new(), new(), new()) {}
+	public ProjectTypes() : this([], [], [], []) {}
 
 	public ObservableCollection<GameObjectType> GameObjectTypes
 	{
-		get => _gameObjectTypes;
-		set => this.RaiseAndSetIfChanged(ref _gameObjectTypes, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = gameObjectTypes;
 
 	public ObservableCollection<CameraType> CameraTypes
 	{
-		get => _cameraTypes;
-		set => this.RaiseAndSetIfChanged(ref _cameraTypes, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = cameraTypes;
 
 	public ObservableCollection<SpriteType> SpriteTypes
 	{
-		get => _spriteTypes;
-		set => this.RaiseAndSetIfChanged(ref _spriteTypes, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = spriteTypes;
 
 	public ObservableCollection<SceneType> SceneTypes
 	{
-		get => _sceneTypes;
-		set => this.RaiseAndSetIfChanged(ref _sceneTypes, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = sceneTypes;
 }

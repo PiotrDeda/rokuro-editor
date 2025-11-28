@@ -20,96 +20,83 @@ public class GameObject(
 	bool flipY,
 	ObservableCollection<CustomProperty> customProperties) : ReactiveObject
 {
-	string _camera = camera;
-	GameObjectType _class = clazz;
-	ObservableCollection<CustomProperty> _customProperties = customProperties;
-	bool _flipX = flipX;
-	bool _flipY = flipY;
-	string _name = name;
-	int _positionX = positionX;
-	int _positionY = positionY;
-	double _rotation = rotation;
-	double _scaleX = scaleX;
-	double _scaleY = scaleY;
-	SpriteType _spriteType = spriteType;
-
 	public string Name
 	{
-		get => _name;
-		set => this.RaiseAndSetIfChanged(ref _name, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = name;
 
 	public GameObjectType Class
 	{
-		get => _class;
+		get;
 		set
 		{
-			_class = value;
+			field = value;
 			CustomProperties = new(value.CustomProperties.Select(p => new CustomProperty(p, "")).ToList());
 		}
-	}
+	} = clazz;
 
 	public SpriteType SpriteType
 	{
-		get => _spriteType;
-		set => this.RaiseAndSetIfChanged(ref _spriteType, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = spriteType;
 
 	public string Sprite { get; set; } = sprite;
 
 	public string Camera
 	{
-		get => _camera;
-		set => this.RaiseAndSetIfChanged(ref _camera, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = camera;
 
 	public int PositionX
 	{
-		get => _positionX;
-		set => this.RaiseAndSetIfChanged(ref _positionX, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = positionX;
 
 	public int PositionY
 	{
-		get => _positionY;
-		set => this.RaiseAndSetIfChanged(ref _positionY, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = positionY;
 
 	public double ScaleX
 	{
-		get => _scaleX;
-		set => this.RaiseAndSetIfChanged(ref _scaleX, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = scaleX;
 
 	public double ScaleY
 	{
-		get => _scaleY;
-		set => this.RaiseAndSetIfChanged(ref _scaleY, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = scaleY;
 
 	public double Rotation
 	{
-		get => _rotation;
-		set => this.RaiseAndSetIfChanged(ref _rotation, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = rotation;
 
 	public bool FlipX
 	{
-		get => _flipX;
-		set => this.RaiseAndSetIfChanged(ref _flipX, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = flipX;
 
 	public bool FlipY
 	{
-		get => _flipY;
-		set => this.RaiseAndSetIfChanged(ref _flipY, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = flipY;
 
 	public ObservableCollection<CustomProperty> CustomProperties
 	{
-		get => _customProperties;
-		set => this.RaiseAndSetIfChanged(ref _customProperties, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = customProperties;
 
 	public static GameObject FromDto(GameObjectDto dto, ProjectTypes types) =>
 		new(

@@ -27,11 +27,7 @@ public partial class NewProjectWindow : ReactiveWindow<NewProjectWindowViewModel
 			var storageFiles = await GetTopLevel(this)!.StorageProvider.OpenFolderPickerAsync(new() {
 				Title = context.Input
 			});
-
-			if (storageFiles.Any())
-				context.SetOutput(storageFiles.First().Path.LocalPath);
-			else
-				context.SetOutput(null);
+			context.SetOutput(storageFiles.Any() ? storageFiles[0].Path.LocalPath : null);
 		}
 		catch
 		{

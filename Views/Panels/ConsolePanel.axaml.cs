@@ -22,8 +22,7 @@ public partial class ConsolePanel : UserControl
 	{
 		if (e.Property.Name == "Text")
 		{
-			if (ScrollViewer == null)
-				ScrollViewer = TextBox?.GetVisualDescendants().OfType<ScrollViewer>().FirstOrDefault();
+			ScrollViewer ??= TextBox?.GetVisualDescendants().OfType<ScrollViewer>().FirstOrDefault();
 			ScrollViewer?.ScrollToEnd();
 		}
 	}

@@ -10,64 +10,56 @@ namespace RokuroEditor.Models;
 
 public class ProjectData : ReactiveObject
 {
-	string _consoleLog = "";
-	ProjectTypes _projectTypes = new();
-	ObservableCollection<Scene> _scenes = new();
-	Camera? _selectedCamera;
-	GameObject? _selectedGameObject;
-	Scene? _selectedScene;
-
 	public string? ProjectPath { get; set; }
 	public string? ProjectName { get; set; }
 	public string DotNetPath { get; set; } = "dotnet";
 
 	public ObservableCollection<Scene> Scenes
 	{
-		get => _scenes;
-		set => this.RaiseAndSetIfChanged(ref _scenes, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = [];
 
 	public string ConsoleLog
 	{
-		get => _consoleLog;
-		set => this.RaiseAndSetIfChanged(ref _consoleLog, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = "";
 
 	public Scene? SelectedScene
 	{
-		get => _selectedScene;
-		set => this.RaiseAndSetIfChanged(ref _selectedScene, value);
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
 	}
 
 	public GameObject? SelectedGameObject
 	{
-		get => _selectedGameObject;
-		set => this.RaiseAndSetIfChanged(ref _selectedGameObject, value);
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
 	}
 
 	public Camera? SelectedCamera
 	{
-		get => _selectedCamera;
-		set => this.RaiseAndSetIfChanged(ref _selectedCamera, value);
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
 	}
 
 	public ProjectTypes ProjectTypes
 	{
-		get => _projectTypes;
-		set => this.RaiseAndSetIfChanged(ref _projectTypes, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = new();
 
 	public void Log(string message) => ConsoleLog += message;
 
 	public void SetProjectPathAndName(string? projectPath)
 	{
-		if (projectPath != null)
-		{
-			ProjectPath = projectPath.Split(Path.DirectorySeparatorChar)
-				.Take(projectPath.Split(Path.DirectorySeparatorChar).Length - 1)
-				.Aggregate((a, b) => $"{a}{Path.DirectorySeparatorChar}{b}");
-			ProjectName = projectPath.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
-		}
+		if (projectPath == null)
+			return;
+		ProjectPath = projectPath.Split(Path.DirectorySeparatorChar)
+			.Take(projectPath.Split(Path.DirectorySeparatorChar).Length - 1)
+			.Aggregate((a, b) => $"{a}{Path.DirectorySeparatorChar}{b}");
+		ProjectName = projectPath.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
 	}
 
 	public bool NewProject()
@@ -112,56 +104,47 @@ public class ProjectData : ReactiveObject
 		return true;
 	}
 
-	public bool LoadProject()
+	public void LoadProject()
 	{
 		if (ProjectPath == null || ProjectName == null)
-			return false;
+			return;
 
 		try
 		{
 			ProjectTypes = ProjectBuilder.GetTypes(ProjectName);
-			Scenes = new();
+			Scenes = [];
 			ProjectBuilder.GetScenePaths(ProjectPath).ForEach(scenePath =>
-				Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!,
-					ProjectTypes)));
+				Scenes.Add(Scene.FromDto(JsonConvert.DeserializeObject<SceneDto>(File.ReadAllText(scenePath))!, ProjectTypes)));
 		}
 		catch (Exception e)
 		{
 			Log(e.ToString());
-			return false;
 		}
-
-		return true;
 	}
 
-	public bool SaveProject()
+	public void SaveProject()
 	{
 		if (ProjectPath == null || ProjectName == null)
-			return false;
+			return;
 
 		try
 		{
 			string scenesPath = Path.Combine(ProjectPath, "assets", "autogen", "scenes");
 			Directory.CreateDirectory(scenesPath);
 			Array.ForEach(Directory.GetFiles(scenesPath), File.Delete);
-			Scenes.ToList().ForEach(scene =>
-				File.WriteAllText(Path.Combine(scenesPath, $"{scene.Name}.json"),
-					JsonConvert.SerializeObject(scene.ToDto())));
+			Scenes.ToList().ForEach(scene => File.WriteAllText(Path.Combine(scenesPath, $"{scene.Name}.json"), JsonConvert.SerializeObject(scene.ToDto())));
 		}
 		catch (Exception e)
 		{
 			Log(e.ToString());
-			return false;
 		}
-
-		return true;
 	}
 
 	public void CloseProject()
 	{
 		ProjectPath = null;
 		ProjectName = null;
-		Scenes = new();
+		Scenes = [];
 		SelectedScene = null;
 		SelectedGameObject = null;
 		SelectedCamera = null;
@@ -171,7 +154,7 @@ public class ProjectData : ReactiveObject
 
 	public void ClearLoadedData()
 	{
-		Scenes = new();
+		Scenes = [];
 		SelectedScene = null;
 		SelectedGameObject = null;
 		SelectedCamera = null;
@@ -182,7 +165,7 @@ public class ProjectData : ReactiveObject
 	{
 		Scenes.Add(new("New Scene",
 			ProjectTypes.SceneTypes.Single(t => t.Name == "Rokuro.Objects.Scene"),
-			new(), new(), new()));
+			[], [], []));
 		SelectedScene = Scenes.Last();
 	}
 
@@ -194,7 +177,7 @@ public class ProjectData : ReactiveObject
 		SelectedScene.GameObjects.Add(new("New Object",
 			ProjectTypes.GameObjectTypes.Single(t => t.Name == "Rokuro.Objects.GameObject"),
 			ProjectTypes.SpriteTypes.Single(t => t.Name == "Rokuro.Graphics.StaticSprite"),
-			"", "Camera", 0, 0, 1, 1, 0, false, false, new()));
+			"", "Camera", 0, 0, 1, 1, 0, false, false, []));
 		SelectedGameObject = SelectedScene.GameObjects.Last();
 	}
 
@@ -205,7 +188,7 @@ public class ProjectData : ReactiveObject
 
 		SelectedScene.Cameras.Add(new("New Camera",
 			ProjectTypes.CameraTypes.Single(t => t.Name == "Rokuro.Graphics.Camera"),
-			new()));
+			[]));
 		SelectedCamera = SelectedScene.Cameras.Last();
 	}
 
@@ -247,35 +230,35 @@ public class ProjectData : ReactiveObject
 			ConsoleLog += $"Sample console log line {i}\n";
 
 		// = Scenes =
-		Scenes = new() {
-			new("Game Example", new("Rokuro.Objects.Scene", new()), new(), new(), new()),
-			new("Many Objects", new("Rokuro.Objects.Scene", new()), new(), new(), new()),
-			new("Empty", new("Rokuro.Objects.Scene", new()), new(), new(), new())
-		};
+		Scenes = [
+			new("Game Example", new("Rokuro.Objects.Scene", []), [], [], []),
+			new("Many Objects", new("Rokuro.Objects.Scene", []), [], [], []),
+			new("Empty", new("Rokuro.Objects.Scene", []), [], [], [])
+		];
 
 		// = Cameras =
 		// == Scene 0 ==
-		Scenes[0].Cameras.Add(new("Camera", new("Rokuro.Graphics.Camera", new()), new()));
-		Scenes[0].Cameras.Add(new("UI Camera", new("Rokuro.Graphics.UICamera", new()), new()));
+		Scenes[0].Cameras.Add(new("Camera", new("Rokuro.Graphics.Camera", []), []));
+		Scenes[0].Cameras.Add(new("UI Camera", new("Rokuro.Graphics.UICamera", []), []));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
-			Scenes[1].Cameras.Add(new($"Camera{i}", new("Rokuro.Graphics.Camera", new()), new()));
+			Scenes[1].Cameras.Add(new($"Camera{i}", new("Rokuro.Graphics.Camera", []), []));
 
 		// = GameObjects =
 		// == Scene 0 ==
-		Scenes[0].GameObjects.Add(new("Player", new("Rokuro.Player", new()), new("Rokuro.Graphics.StaticSprite"),
-			"tiles/player", "Camera", 0, 0, 1, 1, 0, false, false, new()));
+		Scenes[0].GameObjects.Add(new("Player", new("Rokuro.Player", []), new("Rokuro.Graphics.StaticSprite"),
+			"tiles/player", "Camera", 0, 0, 1, 1, 0, false, false, []));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Health", "10"));
 		Scenes[0].GameObjects[0].CustomProperties.Add(new("Damage", "1"));
-		Scenes[0].GameObjects.Add(new("Enemy", new("Rokuro.Enemies.Enemy", new()), new("Rokuro.Graphics.StaticSprite"),
-			"tiles/enemy", "Camera", 0, 0, 1, 1, 0, false, false, new()));
-		Scenes[0].GameObjects.Add(new("Item", new("Rokuro.Items.Item", new()), new("Rokuro.Graphics.StaticSprite"),
-			"tiles/item", "UI Camera", 0, 0, 1, 1, 0, false, false, new()));
+		Scenes[0].GameObjects.Add(new("Enemy", new("Rokuro.Enemies.Enemy", []), new("Rokuro.Graphics.StaticSprite"),
+			"tiles/enemy", "Camera", 0, 0, 1, 1, 0, false, false, []));
+		Scenes[0].GameObjects.Add(new("Item", new("Rokuro.Items.Item", []), new("Rokuro.Graphics.StaticSprite"),
+			"tiles/item", "UI Camera", 0, 0, 1, 1, 0, false, false, []));
 		// == Scene 1 ==
 		foreach (int i in Enumerable.Range(0, 100))
-			Scenes[1].GameObjects.Add(new($"GameObject{i}", new("Rokuro.Objects.GameObject", new()),
+			Scenes[1].GameObjects.Add(new($"GameObject{i}", new("Rokuro.Objects.GameObject", []),
 				new("Rokuro.Graphics.StaticSprite"), "items/blank_item", $"Camera{i}",
-				0, 0, 1, 1, 0, false, false, new()));
+				0, 0, 1, 1, 0, false, false, []));
 		foreach (int i in Enumerable.Range(0, 100))
 			Scenes[1].GameObjects[0].CustomProperties.Add(new($"Property{i}", $"Value{i}"));
 	}

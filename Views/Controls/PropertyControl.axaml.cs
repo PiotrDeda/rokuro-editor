@@ -5,11 +5,8 @@ namespace RokuroEditor.Views.Controls;
 
 public class PropertyControl : TemplatedControl
 {
-	public static readonly StyledProperty<string> LabelProperty =
-		AvaloniaProperty.Register<PropertyControl, string>(nameof(Label));
-
-	public static readonly StyledProperty<string> ValueProperty =
-		AvaloniaProperty.Register<PropertyControl, string>(nameof(Value));
+	public static readonly StyledProperty<string> LabelProperty = AvaloniaProperty.Register<PropertyControl, string>(nameof(Label));
+	public static readonly StyledProperty<string> ValueProperty = AvaloniaProperty.Register<PropertyControl, string>(nameof(Value));
 
 	public string Label
 	{

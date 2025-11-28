@@ -6,7 +6,7 @@ namespace RokuroEditor.Models;
 
 public class SceneType(string name, List<string> customProperties)
 {
-	public static readonly List<string> ReservedProperties = new() { "Name" };
+	static readonly List<string> ReservedProperties = ["Name"];
 
 	public string Name { get; } = name;
 	public List<string> CustomProperties { get; } = customProperties;

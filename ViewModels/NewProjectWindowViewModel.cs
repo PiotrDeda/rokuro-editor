@@ -7,41 +7,37 @@ namespace RokuroEditor.ViewModels;
 
 public class NewProjectWindowViewModel : ViewModelBase
 {
-	string _projectName = "";
-	string _projectPath = "";
-	string _resultingPath = "";
-
 	public NewProjectWindowViewModel()
 	{
 		CreateCommand = ReactiveCommand.Create(() => ResultingPath)!;
-		CancelCommand = ReactiveCommand.Create(() => (string?)null);
+		CancelCommand = ReactiveCommand.Create(string? () => null);
 	}
 
 	public string ProjectPath
 	{
-		get => _projectPath;
+		get;
 		set
 		{
-			_projectPath = this.RaiseAndSetIfChanged(ref _projectPath, value);
+			field = this.RaiseAndSetIfChanged(ref field, value);
 			UpdateResultingPath();
 		}
-	}
+	} = "";
 
 	public string ProjectName
 	{
-		get => _projectName;
+		get;
 		set
 		{
-			_projectName = value;
+			field = value;
 			UpdateResultingPath();
 		}
-	}
+	} = "";
 
 	public string ResultingPath
 	{
-		get => _resultingPath;
-		private set => this.RaiseAndSetIfChanged(ref _resultingPath, value);
-	}
+		get;
+		private set => this.RaiseAndSetIfChanged(ref field, value);
+	} = "";
 
 	public Interaction<string, string?> SelectProjectPath { get; } = new();
 	public ReactiveCommand<Unit, string?> CreateCommand { get; }

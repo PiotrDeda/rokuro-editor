@@ -47,7 +47,7 @@ public partial class GamePreviewPanel : ReactiveUserControl<GamePreviewViewModel
 		});
 	}
 
-	public void RenderGameObjects()
+	void RenderGameObjects()
 	{
 		PreviewCanvas.Children.Clear();
 		foreach (GameObject gameObject in ViewModel?.ProjectData.SelectedScene?.GameObjects ?? new())
@@ -67,11 +67,8 @@ public partial class GamePreviewPanel : ReactiveUserControl<GamePreviewViewModel
 				TextureConfigModel textureConfig = new();
 				try
 				{
-					image = new(Path.Combine(ViewModel!.ProjectData.ProjectPath!, "assets", "textures",
-						gameObject.Sprite) + ".png");
-
-					string configFilename = Path.Combine(ViewModel!.ProjectData.ProjectPath!, "assets", "textures",
-						gameObject.Sprite) + ".yaml";
+					image = new(Path.Combine(ViewModel!.ProjectData.ProjectPath!, "assets", "textures", gameObject.Sprite) + ".png");
+					string configFilename = Path.Combine(ViewModel!.ProjectData.ProjectPath!, "assets", "textures", gameObject.Sprite) + ".yaml";
 					if (File.Exists(configFilename))
 						textureConfig = new DeserializerBuilder()
 							.WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -83,8 +80,7 @@ public partial class GamePreviewPanel : ReactiveUserControl<GamePreviewViewModel
 				{
 					continue;
 				}
-				CroppedBitmap cropped = new(image, new(0, 0,
-					image.PixelSize.Width / textureConfig.Frames, image.PixelSize.Height / textureConfig.States));
+				CroppedBitmap cropped = new(image, new(0, 0, image.PixelSize.Width / textureConfig.Frames, image.PixelSize.Height / textureConfig.States));
 				TransformGroup transformGroup = new() {
 					Children = {
 						new ScaleTransform(gameObject.ScaleX * (gameObject.FlipX ? -1 : 1),

@@ -23,12 +23,9 @@ public class PropertiesPanelViewModel : ViewModelBase
 	public PropertiesPanelViewModel(ProjectData projectData)
 	{
 		ProjectData = projectData;
-		DeleteSceneCommand = ReactiveCommand.CreateFromTask(() =>
-			ShowConfirmationDialog(ProjectData.DeleteSelectedScene, ProjectData.SelectedScene));
-		DeleteGameObjectCommand = ReactiveCommand.CreateFromTask(() =>
-			ShowConfirmationDialog(ProjectData.DeleteSelectedGameObject, ProjectData.SelectedGameObject));
-		DeleteCameraCommand = ReactiveCommand.CreateFromTask(() =>
-			ShowConfirmationDialog(ProjectData.DeleteSelectedCamera, ProjectData.SelectedCamera));
+		DeleteSceneCommand = ReactiveCommand.CreateFromTask(() => ShowConfirmationDialog(ProjectData.DeleteSelectedScene, ProjectData.SelectedScene));
+		DeleteGameObjectCommand = ReactiveCommand.CreateFromTask(() => ShowConfirmationDialog(ProjectData.DeleteSelectedGameObject, ProjectData.SelectedGameObject));
+		DeleteCameraCommand = ReactiveCommand.CreateFromTask(() => ShowConfirmationDialog(ProjectData.DeleteSelectedCamera, ProjectData.SelectedCamera));
 	}
 
 	public ProjectData ProjectData { get; }

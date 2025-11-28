@@ -25,11 +25,12 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 
 	async Task OpenNewProjectMenuHandler(IInteractionContext<Unit, string?> context)
 	{
-		var newProjectWindow = new NewProjectWindow();
-		newProjectWindow.DataContext = new NewProjectWindowViewModel();
+		var newProjectWindow = new NewProjectWindow {
+			DataContext = new NewProjectWindowViewModel()
+		};
 		context.SetOutput(await newProjectWindow.ShowDialog<string?>(
-			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows.First()
-		));
+			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows[0]
+        ));
 	}
 
 	async Task SelectProjectPathHandler(IInteractionContext<string, string?> context)
@@ -40,20 +41,17 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 				new("C# Project File") { Patterns = new List<string> { "*.csproj" } }
 			}
 		});
-
-		if (storageFiles.Any())
-			context.SetOutput(storageFiles.First().Path.LocalPath);
-		else
-			context.SetOutput(null);
+		context.SetOutput(storageFiles.Any() ? storageFiles[0].Path.LocalPath : null);
 	}
 
 	async Task OpenSettingsMenuHandler(IInteractionContext<SettingsWindowViewModel, Unit> context)
 	{
-		var settingsWindow = new SettingsWindow();
-		settingsWindow.DataContext = context.Input;
+		var settingsWindow = new SettingsWindow {
+			DataContext = context.Input
+		};
 		await settingsWindow.ShowDialog(
-			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows.First()
-		);
+			((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).Windows[0]
+        );
 		context.SetOutput(Unit.Default);
 	}
 }

@@ -32,21 +32,21 @@ public partial class RunButtonsPanel : ReactiveUserControl<RunButtonsPanelViewMo
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 	async void RunButton_OnClick(object? sender, RoutedEventArgs e)
 	{
-		if (IsRunning)
-			return;
-		IsRunning = true;
-
-		ViewModel!.ProjectData.SaveProject();
-		if (!ViewModel!.ProjectData.BuildProject())
-		{
-			IsRunning = false;
-			ViewModel!.FlyoutMessage = NoProjectOpenMessage;
-			FlyoutBase.ShowAttachedFlyout((sender as Control)!);
-			return;
-		}
-
 		try
 		{
+			if (IsRunning)
+				return;
+			IsRunning = true;
+
+			ViewModel!.ProjectData.SaveProject();
+			if (!ViewModel!.ProjectData.BuildProject())
+			{
+				IsRunning = false;
+				ViewModel!.FlyoutMessage = NoProjectOpenMessage;
+				FlyoutBase.ShowAttachedFlyout((sender as Control)!);
+				return;
+			}
+
 			await ProjectBuilder.Run(RunProcess, ViewModel.ProjectData.ProjectName!, ViewModel.ProjectData.Log)
 				.WaitForExitAsync();
 		}

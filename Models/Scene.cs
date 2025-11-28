@@ -13,14 +13,11 @@ public class Scene(
 	ObservableCollection<CustomProperty> customProperties
 ) : ReactiveObject
 {
-	ObservableCollection<CustomProperty> _customProperties = customProperties;
-	string _name = name;
-
 	public string Name
 	{
-		get => _name;
-		set => this.RaiseAndSetIfChanged(ref _name, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = name;
 
 	public SceneType Class { get; set; } = clazz;
 	public ObservableCollection<GameObject> GameObjects { get; set; } = gameObjects;
@@ -28,9 +25,9 @@ public class Scene(
 
 	public ObservableCollection<CustomProperty> CustomProperties
 	{
-		get => _customProperties;
-		set => this.RaiseAndSetIfChanged(ref _customProperties, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = customProperties;
 
 	public static Scene FromDto(SceneDto dto, ProjectTypes types) =>
 		new(

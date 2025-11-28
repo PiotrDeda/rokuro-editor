@@ -7,22 +7,19 @@ namespace RokuroEditor.Models;
 
 public class Camera(string name, CameraType clazz, ObservableCollection<CustomProperty> customProperties) : ReactiveObject
 {
-	ObservableCollection<CustomProperty> _customProperties = customProperties;
-	string _name = name;
-
 	public string Name
 	{
-		get => _name;
-		set => this.RaiseAndSetIfChanged(ref _name, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = name;
 
 	public CameraType Class { get; set; } = clazz;
 
 	public ObservableCollection<CustomProperty> CustomProperties
 	{
-		get => _customProperties;
-		set => this.RaiseAndSetIfChanged(ref _customProperties, value);
-	}
+		get;
+		set => this.RaiseAndSetIfChanged(ref field, value);
+	} = customProperties;
 
 	public static Camera FromDto(CameraDto dto, ProjectTypes types) =>
 		new(

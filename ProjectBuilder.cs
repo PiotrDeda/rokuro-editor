@@ -57,23 +57,21 @@ public static class ProjectBuilder
 
 	public static void Build(string projectPath, string projectName, string dotNetPath, Action<string> log)
 	{
-		using (var process = new Process())
-		{
-			process.StartInfo = new() {
-				FileName = Cmd,
-				Arguments =
-					$"{ArgBegin}{dotNetPath} build \"{Path.Combine(projectPath, projectName)}.csproj\" --output {Path.Combine("build", projectName)}{ArgEnd}",
-				CreateNoWindow = true,
-				UseShellExecute = false,
-				RedirectStandardOutput = true,
-				StandardOutputEncoding = Encoding.UTF8
-			};
-			log("= Building project...\n");
-			process.Start();
-			log(process.StandardOutput.ReadToEnd());
-			log("= Finished building project\n");
-			process.WaitForExit();
-		}
+		using var process = new Process();
+		process.StartInfo = new() {
+			FileName = Cmd,
+			Arguments =
+				$"{ArgBegin}{dotNetPath} build \"{Path.Combine(projectPath, projectName)}.csproj\" --output {Path.Combine("build", projectName)}{ArgEnd}",
+			CreateNoWindow = true,
+			UseShellExecute = false,
+			RedirectStandardOutput = true,
+			StandardOutputEncoding = Encoding.UTF8
+		};
+		log("= Building project...\n");
+		process.Start();
+		log(process.StandardOutput.ReadToEnd());
+		log("= Finished building project\n");
+		process.WaitForExit();
 	}
 
 	public static Process Run(Process process, string projectName, Action<string> log)
@@ -109,12 +107,12 @@ public static class ProjectBuilder
 		Type gameObjectType = rokuroAssembly.GetType("Rokuro.Objects.GameObject")!;
 		ObservableCollection<GameObjectType> gameObjectTypes = new(rokuroAssembly.GetTypes()
 			.Concat(projectAssembly.GetTypes()).Where(type => gameObjectType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => GameObjectType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
+			.Select(GameObjectType.FromType).OrderBy(type => type.DisplayName).ToList());
 
 		Type cameraType = rokuroAssembly.GetType("Rokuro.Graphics.Camera")!;
 		ObservableCollection<CameraType> cameraTypes = new(rokuroAssembly.GetTypes()
 			.Concat(projectAssembly.GetTypes()).Where(type => cameraType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => CameraType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
+			.Select(CameraType.FromType).OrderBy(type => type.DisplayName).ToList());
 
 		Type spriteType = rokuroAssembly.GetType("Rokuro.Graphics.Sprite")!;
 		ObservableCollection<SpriteType> spriteTypes = new(rokuroAssembly.GetTypes()
@@ -124,14 +122,13 @@ public static class ProjectBuilder
 		Type sceneType = rokuroAssembly.GetType("Rokuro.Objects.Scene")!;
 		ObservableCollection<SceneType> sceneTypes = new(rokuroAssembly.GetTypes()
 			.Concat(projectAssembly.GetTypes()).Where(type => sceneType.IsAssignableFrom(type) && !type.IsAbstract)
-			.Select(type => SceneType.FromType(type)).OrderBy(type => type.DisplayName).ToList());
+			.Select(SceneType.FromType).OrderBy(type => type.DisplayName).ToList());
 
 		return new(gameObjectTypes, cameraTypes, spriteTypes, sceneTypes);
 	}
 
 	public static List<string> GetScenePaths(string projectPath) =>
 		Directory.Exists(Path.Combine(projectPath, "assets", "autogen", "scenes"))
-			? Directory.GetFiles(Path.Combine(projectPath, "assets", "autogen", "scenes"), "*.json",
-				SearchOption.AllDirectories).ToList()
-			: new();
+			? Directory.GetFiles(Path.Combine(projectPath, "assets", "autogen", "scenes"), "*.json", SearchOption.AllDirectories).ToList()
+			: [];
 }

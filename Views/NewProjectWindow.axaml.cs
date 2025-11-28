@@ -13,14 +13,14 @@ public partial class NewProjectWindow : ReactiveWindow<NewProjectWindowViewModel
 	{
 		InitializeComponent();
 
-		this.WhenActivated(d => {
-			d(ViewModel!.CreateCommand.Subscribe(Close));
-			d(ViewModel!.CancelCommand.Subscribe(Close));
-			d(ViewModel!.SelectProjectPath.RegisterHandler(SelectProjectPathHandler));
-		});
+		this.WhenActivated(() => [
+			ViewModel!.CreateCommand.Subscribe(_ => Close()),
+			ViewModel!.CancelCommand.Subscribe(_ => Close()),
+			ViewModel!.SelectProjectPath.RegisterHandler(SelectProjectPathHandler)
+		]);
 	}
 
-	async Task SelectProjectPathHandler(InteractionContext<string, string?> context)
+	async Task SelectProjectPathHandler(IInteractionContext<string, string?> context)
 	{
 		try
 		{

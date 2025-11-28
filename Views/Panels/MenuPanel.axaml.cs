@@ -18,12 +18,12 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 	{
 		InitializeComponent();
 
-		this.WhenActivated(d => { d(ViewModel!.OpenNewProjectMenu.RegisterHandler(OpenNewProjectMenuHandler)); });
-		this.WhenActivated(d => { d(ViewModel!.SelectProjectPath.RegisterHandler(SelectProjectPathHandler)); });
-		this.WhenActivated(d => { d(ViewModel!.OpenSettingsMenu.RegisterHandler(OpenSettingsMenuHandler)); });
+		this.WhenActivated(() => [ViewModel!.OpenNewProjectMenu.RegisterHandler(OpenNewProjectMenuHandler)]);
+		this.WhenActivated(() => [ViewModel!.SelectProjectPath.RegisterHandler(SelectProjectPathHandler)]);
+		this.WhenActivated(() => [ViewModel!.OpenSettingsMenu.RegisterHandler(OpenSettingsMenuHandler)]);
 	}
 
-	async Task OpenNewProjectMenuHandler(InteractionContext<Unit, string?> context)
+	async Task OpenNewProjectMenuHandler(IInteractionContext<Unit, string?> context)
 	{
 		var newProjectWindow = new NewProjectWindow();
 		newProjectWindow.DataContext = new NewProjectWindowViewModel();
@@ -32,7 +32,7 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 		));
 	}
 
-	async Task SelectProjectPathHandler(InteractionContext<string, string?> context)
+	async Task SelectProjectPathHandler(IInteractionContext<string, string?> context)
 	{
 		var storageFiles = await TopLevel.GetTopLevel(this)!.StorageProvider.OpenFilePickerAsync(new() {
 			Title = context.Input,
@@ -47,7 +47,7 @@ public partial class MenuPanel : ReactiveUserControl<MenuPanelViewModel>
 			context.SetOutput(null);
 	}
 
-	async Task OpenSettingsMenuHandler(InteractionContext<SettingsWindowViewModel, Unit> context)
+	async Task OpenSettingsMenuHandler(IInteractionContext<SettingsWindowViewModel, Unit> context)
 	{
 		var settingsWindow = new SettingsWindow();
 		settingsWindow.DataContext = context.Input;
